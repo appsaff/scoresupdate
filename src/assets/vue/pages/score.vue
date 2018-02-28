@@ -1,0 +1,198 @@
+<template>
+  <f7-page>
+      <f7-navbar class="navbar-top">
+        <f7-nav-left>
+          <f7-link panel-open="left"><f7-icon ion="navicon" size="44px"></f7-icon></f7-link>
+        </f7-nav-left>
+        <div class="titles">
+          <f7-nav-title subtitle="Score">Soccer</f7-nav-title>
+          <f7-nav-title class="subtitle">Score</f7-nav-title>
+        </div>
+        <f7-nav-right>
+        </f7-nav-right>
+      </f7-navbar>
+      <f7-subnavbar class="toolbar-top">
+        <f7-link class="ic-home"><f7-icon ion="android-home" size="40px"></f7-icon></f7-link>
+        <f7-toolbar tabbar class="tabbar-top">
+          <f7-link tab-link="#tabc1" tab-link-active>Dec <span>10</span></f7-link>
+          <f7-link tab-link="#tabc2">Dec <span>11</span></f7-link>
+          <f7-link tab-link="#tabc3">Dec <span>12</span></f7-link>
+          <f7-link tab-link="#tabc4">Dec <span>13</span></f7-link>
+          <f7-link tab-link="#tabc5">Dec <span>14</span></f7-link>
+          <f7-link tab-link="#tabc6">Dec <span>15</span></f7-link>
+          <f7-link tab-link="#tabc7">Dec <span>16</span></f7-link>
+          <f7-link tab-link="#tabc8">Dec <span>17</span></f7-link>
+        </f7-toolbar>
+      </f7-subnavbar>
+      <f7-tabs swipeable class="bg-tabs">
+        <f7-tab id="tabc1" tab-active>
+          <f7-list class="teams">
+            <f7-list-item class="team">
+              <div class="top-b"> 
+                <img src="../../../static/img/flag.png" alt="">
+                <f7-link href="/scoreitem/"><p>Graet soccer tournament</p></f7-link>
+                <f7-link href="#" v-on:click="favourite" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
+              </div>
+              <div class="bottom-b">
+                <div class="left-bot">
+                  <div class="time-block">
+                    <span>Full</span>
+                    <span>time</span>
+                  </div>
+                  <div class="team-block">
+                    <span>Team - A</span>
+                    <span>Team - B</span>
+                  </div>
+                </div>
+                <div class="right-bot">
+                  <div class="point-block">
+                    <span>4</span>
+                    <span>4</span>
+                  </div>
+                  <f7-link href="/headtohead/" class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
+                </div>
+              </div>
+            </f7-list-item>
+            <f7-list-item class="team">
+              <div class="top-b"> 
+                <img src="../../../static/img/flag.png" alt="">
+                <f7-link href="/scoreitem/"><p>Graet soccer tournament</p></f7-link>
+                <f7-link href="#" v-on:click="favourite" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
+              </div>
+              <div class="bottom-b">
+                <div class="left-bot">
+                  <div class="time-block">
+                    <span>Full</span>
+                    <span>time</span>
+                  </div>
+                  <div class="team-block">
+                    <span>Team - A</span>
+                    <span>Team - B</span>
+                  </div>
+                </div>
+                <div class="right-bot">
+                  <div class="point-block">
+                    <span>4</span>
+                    <span>4</span>
+                  </div>
+                  <f7-link href="/headtohead/" class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
+                </div>
+              </div>
+            </f7-list-item>
+            <f7-list-item>
+              
+            </f7-list-item>
+          </f7-list>
+        </f7-tab>
+        <f7-tab id="tabc2">Tab 2 content...</f7-tab>
+      </f7-tabs>
+            
+  </f7-page>
+</template>
+<script>
+export default {
+      data() {
+          return{
+          isLoading: true,
+          }
+      },
+      methods:{
+          favourite(){
+              this.isLoading = !this.isLoading;
+          }
+      }
+} ;
+</script>
+<style>
+  .md .list .is-gray{
+    color: #786f72;
+  }
+  .md .list .is-purple{
+    color: #6d2b8c;
+  }
+
+  .md .toolbar-top a.ic-home{
+    padding-right: 0px;
+  }
+
+  .bg-tabs{
+    background-color: #f7f7f7;
+  }
+  .md .teams{
+    margin: 0px 0; 
+  }
+  .teams .team .item-inner{
+    display: flex;
+    flex-direction: column;
+    text-transform: uppercase;
+    padding-bottom: 0px;
+  }
+  .teams .team .item-inner .top-b{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    box-shadow: 0px 2px 6px 0px rgba(77, 77, 77, 0.1);
+    line-height: 1.3;
+  }
+  .teams .team .item-inner .top-b p{
+    font-weight: 600;
+    font-size: 12px;
+    color: #000;
+  }
+  .teams .team .item-inner .top-b .name-link{
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 10px;
+  }
+  .teams .team .item-inner .top-b img{
+    width: 70px;
+    height: 46px;
+  }
+  .teams .team .item-inner .bottom-b{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .like{
+    margin-right: 10px;
+  }
+
+  .teams .team .item-inner .bottom-b span{
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .left-bot{
+    display: flex;
+  }
+  .right-bot{
+    display: flex;
+    align-items: center;
+  }
+  .time-block{
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+    line-height: 17px;
+    align-self: center;
+  }
+  .team-block{
+    display: flex;
+    flex-direction: column;
+    line-height: 17px;
+    align-self: center;
+  }
+  .point-block{
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
+    line-height: 17px;
+    align-self: center;
+  }
+  .md .navigate .icon{
+    color: #6d2b8c;
+    margin-right: 10px;
+  }
+</style>

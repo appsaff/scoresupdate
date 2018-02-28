@@ -1,0 +1,142 @@
+/* Your app styles here */
+.md .navbar-top{
+    background: linear-gradient(to right, rgba(105,41,135,1) 0%, rgba(202,116,213,1) 100%);
+}
+.md .toolbar-top{
+    background: linear-gradient(to right, rgba(105,41,135,1) 0%, rgba(202,116,213,1) 100%);
+}
+.md .subnavbar:after{
+    display: none;
+}
+.md .tabbar-top{
+    background: none;
+}
+.md .toolbar:after{
+    display: none;
+}
+.md .toolbar-bot{
+    background: linear-gradient(to right, rgba(105,41,135,1) 0%, rgba(202,116,213,1) 100%);
+}
+.md .toolbar-bot i.icon{
+    font-size: 34px;
+}
+.md .tabbar-top a.link{
+    line-height: 12px;
+    min-width: 44px;
+    text-transform: none;
+    font-size: 13px;
+}
+.md .toolbar-bot .toolbar-inner .tab-link{
+    font-size: 12px;
+    overflow: visible;
+}
+.md .navbar-top .titles{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    margin-right: 56px;
+}
+.md .navbar-top .titles .title{
+    text-align: center;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 24px;
+}
+.md .navbar-top .titles .subtitle{
+    text-align: center;
+    font-family: 'robotolight';
+    font-size: 24px;
+    font-weight: 100;
+    line-height: 24px;
+}
+
+.md .list .item-inner:after{
+    display: none;
+}
+.md .list ul:after{
+    display: none;
+}
+.md .list ul:before{
+    display: none;
+}
+.md .searchbar-backdrop{
+    background: none;
+}
+.md .toolbar a.link i + span{
+    margin-left: 0px;
+    font-size: 10px;
+    margin-top: 5px;
+    line-height: 36px;
+}
+.md .tabbar .tab-link-highlight{
+    background-color: #f7f7f7;
+}
+.md .popup-page .page-content{
+    background: linear-gradient(to right, rgba(105,41,135,1) 0%, rgba(202,116,213,1) 100%);
+    padding: 0px 15px;
+}
+.md .popup-page .popup-block{
+    background-color: #fff;
+    text-align: center;
+    padding-bottom: 30px;
+    margin: 80px 0;
+}
+.md .popup-page .block-header{
+    text-align: center;
+    font-size: 20px;
+    color: #000;
+    position: relative;
+    padding-top: 40px;
+    padding-bottom: 10px;
+}
+.md .close-but{
+    position: absolute;
+    right: 0;
+    top: 10px;
+    color: #9b9b9b;
+}
+.md .popup-inputs ul li{
+    border: 1px solid #dbdbdb;
+    margin-bottom: 10px;
+}
+.md .item-input-wrap:after{
+    display: none;
+}
+.md .popup-inputs ul li .item-input input::placeholder {
+    color: #000;
+  }
+
+.md .blue-but{
+    background-color: #2561dd;
+    border-radius: 15px;
+    color: #fff;
+    padding: 30px 40px;
+    line-height: 0px;
+    font-size: 24px;
+    font-family: 'robotolight';
+    font-weight: 100;
+}
+.md .popup-page .but{
+    display: inline-table;
+    background-color: #3a589e;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    line-height: 0px;
+    color: #fff;
+    width: 48%;
+    text-transform: none;
+    font-size: 18px;
+    font-family: 'robotolight';
+    font-weight: 100;
+    box-shadow: 0px 2px 6px 0px rgb(84, 84, 84);
+}
+.md .popup-page .but i{
+    margin-right: 10px;
+}
+.md .popup-page .red{
+    background-color: #ea4235;
+}
+.md .popup-page .segmented{
+    justify-content: space-between;
+}

@@ -1,0 +1,38 @@
+export default [
+  {
+    path: '/news/',
+    component: require('./assets/vue/pages/news.vue')
+  },
+  {
+    path: '/menu/',
+    component: require('./assets/vue/pages/menu.vue')
+  },
+  {
+    path: '/headtohead/',
+    component: require('./assets/vue/pages/headtohead.vue')
+  },
+  {
+    path: '/scoreitem/',
+    component: require('./assets/vue/pages/scoreitem.vue')
+  },
+  {
+    path: '/score/',
+    component: require('./assets/vue/pages/score.vue')
+  },
+  {
+    path: '/favourites/',
+    component: require('./assets/vue/pages/favourites.vue')
+  },
+  {
+    path: '/dynamic-route/blog/:blogId/post/:postId/',
+    component: require('./assets/vue/pages/dynamic-route.vue')
+  },
+  {
+    path: '/panel-left/',
+    component: require('./assets/vue/pages/panel-left.vue')
+  },
+  {
+    path: '/vuex/',
+    component: require('./assets/vue/pages/vuex.vue')
+  },
+]
