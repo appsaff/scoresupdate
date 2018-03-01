@@ -1,5 +1,9 @@
 export default [
   {
+    path: '/newsPage/',
+    component: require('./assets/vue/pages/newsPage.vue')
+  },
+  {
     path: '/news/',
     component: require('./assets/vue/pages/news.vue')
   },

@@ -9,34 +9,46 @@
         </f7-nav-right>
     </f7-navbar> 
     <f7-list class="news .bg-list">
-        <f7-list-item class="new">
-            <f7-link>
+        <f7-list-item @click="newsData(index)" v-for="(article, index) in articles" :key="article.id" class="new">
             <div class="new-img">
-                <img src="../../../static/img/flag.png" alt="">
+                <img :src="article.urlToImage" alt="">
             </div>
             <div class="new-desc">
-                <p>Madrid can`t give up in liga</p>
-                <span>Feb 28, 2018, 4:15 pm</span>
+                <p>{{ article.title }}</p>
+                <span>{{ article.publishedAt }}</span>
             </div>
-            </f7-link>
-        </f7-list-item>
-        <f7-list-item class="new">
-            <f7-link>
-            <div class="new-img">
-                <img src="../../../static/img/flag.png" alt="">
-            </div>
-            <div class="new-desc">
-                <p>Madrid can`t give up in liga</p>
-                <span>Feb 28, 2018, 4:15 pm</span>
-            </div>
-            </f7-link>
         </f7-list-item>
     </f7-list>
   </f7-page>
 </template>
 
 <script>
-export default {};
+import axios from "../../../../node_modules/axios";
+import newsPageVue from './newsPage.vue';
+export default {
+  data() {
+    return {
+      articles: []
+    };
+  },
+  mounted() {
+    var app = this;
+    axios
+      .get("https://newsapi.org/v2/top-headlines?sources=talksport&apiKey=0e05cfcfe2724a07846e6f1ade74520f")
+      .then(function(res) {
+       app.articles = res.data.articles
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+  methods:{
+      newsData(index){
+          this.$root.news = this.articles[index];
+          this.$f7router.navigate('/newsPage/');
+      }
+  },
+};
 </script>
 <style>
 
@@ -58,13 +70,13 @@ export default {};
     box-shadow: 0px 2px 6px 0px rgba(77, 77, 77, 0.1);
   }
   .md .new .new-img{
-      width: 20%;
+      width: 30%;
   }
   .md .new .new-img img{
       width: 100%;
   }
   .md .new .new-desc{
-      width: 80%;
+      width: 70%;
       padding-left: 10px;
       flex-direction: column;
   }

@@ -1,4 +1,5 @@
 /* Your app styles here */
+
 .md .navbar-top{
     background: linear-gradient(to right, rgba(105,41,135,1) 0%, rgba(202,116,213,1) 100%);
 }
@@ -139,4 +140,7 @@
 }
 .md .popup-page .segmented{
     justify-content: space-between;
+}
+.md .page-content{
+    padding-bottom: 60px;
 }

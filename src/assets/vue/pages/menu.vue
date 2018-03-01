@@ -20,7 +20,7 @@
       <f7-list-item v-for="league in leagues" :key="league.id" class="team">
         <div  class="top-b"> 
           <img src="../../../static/img/flag.png" alt="">
-          <f7-link class="name-link" href="/scoreitem/"><p>{{ league.name }}</p></f7-link>
+          <f7-link class="name-link" href="/scoreitem/"><p>{{ league.caption }}</p></f7-link>
           <f7-link href="/headtohead/" class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
         </div> 
         </f7-list-item>
@@ -29,24 +29,32 @@
 </template>
 
 <script>
-import axios from '../../../../node_modules/axios'
+import axios from "../../../../node_modules/axios";
 export default {
   data() {
     return {
-      leagues : []
-    }
+      leagues: []
+    };
   },
-  mounted(){
+  mounted() {
     var app = this;
-    axios.get('../../../static/data.json')
-    .then(function (res) {
-      app.leagues = res.data.league
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
-    }
-}
+    let token = "b3b4304e4a99498483b444b576330fe0";
+    let headers = {
+      headers: {
+        "X-Auth-Token":  token
+      }
+    };
+
+    axios
+      .get("http://api.football-data.org/v1/competitions/", headers)
+      .then(function(res) {
+       app.leagues = res.data
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+};
 </script>
 <style>
 .md .searchbar-icon {
