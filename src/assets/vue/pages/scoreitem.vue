@@ -24,12 +24,12 @@
         </div> 
     </f7-block>
     <f7-list id="search-list" class="teams .bg-list">
-        <f7-list-item  @click="matchData(index)" v-for="(fixture, index) in fixtures" :key="fixture.id" class="team">
+        <f7-list-item v-for="fixture in fixtures" :key="fixture.id" class="team">
+        <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
         <div class="bottom-b">
                 <div class="left-bot">
                   <div class="time-block">
-                    <span>Full</span>
-                    <span>time</span>
+                    <span>{{ fixture.status }}</span>
                   </div>
                   <div class="team-block">
                     <span>{{ fixture.homeTeamName }}</span>
@@ -44,6 +44,7 @@
                   <f7-link href="#" v-on:click="favourite" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
                 </div>
               </div> 
+              </f7-link>
         </f7-list-item>
     </f7-list>
   </f7-page>
@@ -59,26 +60,36 @@ export default {
     };
   },
   mounted() {
-    HTTP.get("competitions/464/fixtures")
+    let leagueId = this.$f7route.params.id;
+    HTTP.get("competitions/" + leagueId + "/fixtures")
       .then(response => {
         this.fixtures = response.data.fixtures;
       })
       .catch(function(error) {
-        console.log(error);
+        this.fixtures = "Data is not avaliable";
       });
   },
   methods: {
     favourite() {
       this.isLoading = !this.isLoading;
     },
-    newsData(index) {
-      this.$root.news = this.articles[index];
-      this.$f7router.navigate("/scoreitem/");
+    getHeadToHead(link) {
+      let id = link.match(/[0-9]\d+/);
+      this.$f7router.navigate("/headtohead/" + id);
+      //  Child sent context
+      // this.$f7router.navigate("/headtohead/" , { context: { id: id } });
     }
   }
 };
 </script>
 <style>
+.md .scoreit-page .link-head {
+  width: 100%;
+  color: #000;
+}
+.md .scoreit-page .link span + span {
+  margin-left: 0px;
+}
 .md .searchbar-icon {
   background-image: url("../../../static/img/search.png");
   background-size: 20px 20px;

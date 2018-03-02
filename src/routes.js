@@ -12,11 +12,11 @@ export default [
     component: require('./assets/vue/pages/menu.vue')
   },
   {
-    path: '/headtohead/',
+    path: '/headtohead/:id',
     component: require('./assets/vue/pages/headtohead.vue')
   },
   {
-    path: '/scoreitem/',
+    path: '/scoreitem/:id',
     component: require('./assets/vue/pages/scoreitem.vue')
   },
   {

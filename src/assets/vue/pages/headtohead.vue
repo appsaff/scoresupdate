@@ -50,28 +50,7 @@
                     <f7-link href="" class="like"></f7-link>
                   </div> 
               </f7-block>
-              <f7-list id="search-list" class="teams .bg-list">
-                  <f7-list-item class="team">
-                  <div class="bottom-b">
-                          <div class="left-bot">
-                            <div class="time-block">
-                              <span>Full</span>
-                              <span>time</span>
-                            </div>
-                            <div class="team-block">
-                              <span>Team - A</span>
-                              <span>Team - B</span>
-                            </div>
-                          </div>
-                          <div class="right-bot">
-                            <div class="point-block">
-                              <span>4</span>
-                              <span>4</span>
-                            </div>
-
-                          </div>
-                        </div> 
-                  </f7-list-item>
+              <f7-list v-for="headtohead in headtoheads" :key="headtohead.id" id="search-list" class="teams .bg-list">
                   <f7-list-item class="team">
                   <div class="bottom-b">
                           <div class="left-bot">
@@ -105,7 +84,25 @@
 </template>
 
 <script>
-export default {};
+import { HTTP } from "../../js/http";
+export default {
+  data() {
+    return {
+      isLoading: true,
+      headtoheads: []
+    };
+  },
+  mounted() {
+    console.log(this.$f7route);
+    // HTTP.get("fixtures/164778")
+    //   .then(response => {
+    //     this.headtoheads = response.data.headtoheads;
+    //   })
+    //   .catch(function(error) {
+    //     this.headtoheads = "Data is not avaliable";
+    //   });
+  },
+};
 </script>
 <style>
 .md .head-page .bottom-b {
