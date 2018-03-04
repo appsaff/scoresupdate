@@ -61,6 +61,7 @@ export default {
   },
   mounted() {
     let leagueId = this.$f7route.params.id;
+    console.log(this.$f7route.params)
     HTTP.get("competitions/" + leagueId + "/fixtures")
       .then(response => {
         this.fixtures = response.data.fixtures;

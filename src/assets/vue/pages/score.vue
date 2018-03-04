@@ -89,6 +89,9 @@ export default {
 };
 </script>
 <style>
+.md .time-block span{
+  width: 50px;
+}
 .md .list .is-gray {
   color: #786f72;
 }

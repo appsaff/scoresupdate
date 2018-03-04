@@ -18,7 +18,7 @@
     </f7-block>
     <f7-list id="search-list" class="teams .bg-list">
       <f7-list-item  v-for="league in leagues" :key="league.id" class="team">
-        <f7-link class="menu-link" :href="'/scoreitem/' + league.id">
+        <f7-link  class="menu-link" :href="'/scoreitem/' + league.id">
         <div  class="top-b"> 
           <img src="../../../static/img/flag.png" alt="">
           <span class="name-link" ><p>{{ league.caption }}</p></span>
@@ -35,7 +35,7 @@ import { HTTP } from "../../js/http";
 export default {
   data() {
     return {
-      leagues: []
+      leagues: [],
     };
   },
   mounted() {
