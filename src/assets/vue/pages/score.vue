@@ -30,10 +30,10 @@
             <f7-list-item v-for="fixture in fixtures" :key="fixture.id" class="team">
               <div class="top-b"> 
                 <img src="../../../static/img/flag.png" alt="">
-                <f7-link href="/scoreitem/"><p>Graet soccer tournament</p></f7-link>
+                <p>Graet soccer tournament</p>
                 <f7-link href="#" v-on:click="favourite" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
               </div>
-              <div class="bottom-b">
+              <f7-link class="bottom-b">
                 <div class="left-bot">
                   <div class="time-block">
                     <span>{{ fixture.status }}</span>
@@ -50,7 +50,7 @@
                   </div>
                   <f7-link href="/headtohead/" class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
                 </div>
-              </div>
+              </f7-link>
             </f7-list-item>
             <f7-list-item>
               
@@ -64,6 +64,7 @@
 </template>
 <script>
 import { HTTP } from "../../js/http";
+import index from 'vue';
 export default {
   data() {
     return {
@@ -72,7 +73,6 @@ export default {
     };
   },
   mounted() {
-    let leagueId = this.$f7route.params.id;
     HTTP.get("fixtures/")
       .then(response => {
         this.fixtures = response.data.fixtures;
@@ -84,7 +84,15 @@ export default {
   methods: {
     favourite() {
       this.isLoading = !this.isLoading;
-    }
+    },
+    // getMatch() {
+    //   let hrefMatch = this.fixtures[0]._links.self.href;
+    //   console.log(this.fixtures[0]._links.self.href)
+    //   let id = hrefMatch.match(/[0-9]\d+/);
+    //   this.$f7router.navigate("/headtohead/" + id);
+    //   //  Child sent context
+    //   // this.$f7router.navigate("/headtohead/" , { context: { id: id } });
+    // }
   }
 };
 </script>
@@ -138,11 +146,15 @@ export default {
   width: 70px;
   height: 46px;
 }
+.md .link span + span{
+  margin-left: 0px;
+}
 .teams .team .item-inner .bottom-b {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
+  color: #000;
 }
 .like {
   margin-right: 10px;

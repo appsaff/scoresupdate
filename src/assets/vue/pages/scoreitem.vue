@@ -13,20 +13,20 @@
       placeholder="Search Results"
       search-container="#search-list"
       search-item="li"
-      search-in=".item-title"
+      search-in=".team-block span"
     ></f7-searchbar> 
     </f7-block>
     <f7-block class="team">
       <div class="top-b"> 
           <img src="../../../static/img/flag.png" alt="">
-          <p>Graet soccer tournament</p>
+          <p>{{ caption }}</p>
           <f7-link href="#" class="like"></f7-link>
         </div> 
     </f7-block>
     <f7-list id="search-list" class="teams .bg-list">
-        <f7-list-item v-for="fixture in fixtures" :key="fixture.id" class="team">
-        <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
+        <f7-list-item v-for="(fixture, index) in fixtures" :key="index" class="team">
         <div class="bottom-b">
+                <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
                 <div class="left-bot">
                   <div class="time-block">
                     <span>{{ fixture.status }}</span>
@@ -36,15 +36,15 @@
                     <span>{{ fixture.awayTeamName }}</span>
                   </div>
                 </div>
+                </f7-link>
                 <div class="right-bot">
                   <div class="point-block">
                     <span>{{ fixture.result.goalsHomeTeam }}</span>
                     <span>{{ fixture.result.goalsAwayTeam }}</span>
                   </div>
-                  <f7-link href="#" v-on:click="favourite" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
+                  <f7-link href="#" v-on:click="favourite(index)" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
                 </div>
               </div> 
-              </f7-link>
         </f7-list-item>
     </f7-list>
   </f7-page>
@@ -55,13 +55,15 @@ import { HTTP } from "../../js/http";
 export default {
   data() {
     return {
+      storage: window.localStorage,
+      caption: '',
       isLoading: true,
       fixtures: []
     };
   },
   mounted() {
     let leagueId = this.$f7route.params.id;
-    console.log(this.$f7route.params)
+    this.caption = this.$f7route.context.caption;
     HTTP.get("competitions/" + leagueId + "/fixtures")
       .then(response => {
         this.fixtures = response.data.fixtures;
@@ -71,19 +73,25 @@ export default {
       });
   },
   methods: {
-    favourite() {
-      this.isLoading = !this.isLoading;
-    },
     getHeadToHead(link) {
       let id = link.match(/[0-9]\d+/);
-      this.$f7router.navigate("/headtohead/" + id);
+      this.$f7router.navigate("/headtohead/" + id, { context: { caption: this.caption } });
       //  Child sent context
       // this.$f7router.navigate("/headtohead/" , { context: { id: id } });
-    }
+    },
+    favourite(index) {
+      let favourite = [];
+      favourite.push(this.fixtures[index]);
+      this.storage.setItem("favour", JSON.stringify(favourite));
+      this.isLoading = !this.isLoading;
+    } 
   }
 };
 </script>
 <style>
+.md .left-bot{
+  width: 100%;
+}
 .md .scoreit-page .link-head {
   width: 100%;
   color: #000;

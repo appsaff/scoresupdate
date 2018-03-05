@@ -49,8 +49,9 @@ export default new Vue({
   // Root Element
   el: '#app',
   data: {
-    news: []
+    news: [],
   },
+  
   store,
   render: c => c('app'),
   components: {

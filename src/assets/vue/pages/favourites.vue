@@ -14,9 +14,30 @@
     </f7-toolbar>
     <f7-tabs swipeable class="bg-tabs">
         <f7-tab id="tabf1" tab-active>
-          <f7-list class="teams">
-            
-          </f7-list>
+          <f7-list id="search-list" class="teams .bg-list">
+            <f7-list-item v-for="(fav, index) in favour" :key="index" class="team">
+            <div class="bottom-b">
+                    <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
+                    <div class="left-bot">
+                      <div class="time-block">
+                        <span>{{ fav.status }}</span>
+                      </div>
+                      <div class="team-block">
+                        <span>{{ fav.homeTeamName }}</span>
+                        <span>{{ fav.awayTeamName }}</span>
+                      </div>
+                    </div>
+                    </f7-link>
+                    <div class="right-bot">
+                      <div class="point-block">
+                        <span>{{ fav.result.goalsHomeTeam }}</span>
+                        <span>{{ fav.result.goalsAwayTeam }}</span>
+                      </div>
+                      <f7-link href="#" v-on:click="favourite(index)" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
+                    </div>
+                  </div> 
+            </f7-list-item>
+        </f7-list>
         </f7-tab>
         <f7-tab id="tabf2">Tab 2 content...</f7-tab>
       </f7-tabs>
@@ -26,36 +47,53 @@
 <script>
 export default {
   data() {
-          return{
-          isLoading: true,
-          teams: []
-          }
-      },
-      methods:{
-          favourite(){
-              this.isLoading = !this.isLoading;
-          }
-      }
-}
+    return {
+      storage: window.localStorage,
+      isLoading: true,
+      favour: []
+    };
+  },
+  mounted() {
+    this.favour = JSON.parse(this.storage.getItem("favour"));
+    console.log(this.favour)
+  },
+  methods: {
+    favourite() {
+      this.isLoading = !this.isLoading;
+    }
+  }
+};
 </script>
 <style>
-.md .head-title{
+.md .favour-page .bottom-b{
+  position: relative;
+}
+.md .favour-page .bottom-b a{
+  color: #000;
+}
+.md .favour-page .team .bottom-b:after {
+  content: "";
+  position: absolute;
+  border-bottom: 1px solid #000;
+  width: 100%;
+  bottom: 0;
+}
+.md .head-title {
   color: #fdf018;
 }
 .md .favour-page .tabbar-favor {
-  background: rgba(202,116,213,1); 
+  background: rgba(202, 116, 213, 1);
 }
-.md .favour-page .tabbar-favor a.link{
-    line-height: 12px;
-    min-width: 44px;
-    text-transform: none;
-    font-size: 16px;
+.md .favour-page .tabbar-favor a.link {
+  line-height: 12px;
+  min-width: 44px;
+  text-transform: none;
+  font-size: 16px;
 }
-.tabbar-favor i::before{
+.tabbar-favor i::before {
   line-height: 0.6;
 }
-.md .favour-page .tabbar .tab-link-highlight{
+.md .favour-page .tabbar .tab-link-highlight {
   background-color: #6d2b8c;
 }
-
 </style>

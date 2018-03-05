@@ -18,7 +18,7 @@
     </f7-block>
     <f7-list id="search-list" class="teams .bg-list">
       <f7-list-item  v-for="league in leagues" :key="league.id" class="team">
-        <f7-link  class="menu-link" :href="'/scoreitem/' + league.id">
+        <f7-link @click="getLeague(league.id , league.caption)" class="menu-link">
         <div  class="top-b"> 
           <img src="../../../static/img/flag.png" alt="">
           <span class="name-link" ><p>{{ league.caption }}</p></span>
@@ -47,6 +47,11 @@ export default {
         console.log(error);
       });
   },
+  methods:{
+    getLeague(id, caption){
+      this.$f7router.navigate("/scoreitem/" + id, { context: { caption: caption } });
+    }
+  }
 };
 </script>
 <style>

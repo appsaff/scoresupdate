@@ -13,16 +13,16 @@
       <div class="head-live-left"> 
         <div class="time-block">
           <img src="../../../static/img/flag.png" alt="">
-          <span>1:05</span>
+          <span>{{ fixture.status }}</span>
         </div>
         <div class="name-block">
-          <h5>CUP NAME HERE</h5>
-          <p>TEAM A</p>
-          <p>TEAM B</p>
+          <h5>{{ caption }}</h5>
+          <p>{{ fixture.homeTeamName }}</p>
+          <p>{{ fixture.awayTeamName }}</p>
         </div>
       </div> 
       <div class="head-live-right"> 
-        DATE
+        {{ fixture.date }}
       </div> 
     </f7-block>
     <div class="container">
@@ -33,21 +33,43 @@
     </div>
     <f7-tabs swipeable class="bg-tabs">
         <f7-tab id="tabh1" tab-active>
-          
+        
         </f7-tab>
         <f7-tab id="tabh2">
           <f7-toolbar  tabbar class="tabbar-head-second">
-              <f7-link tab-link="#tabhh1" tab-link-active><span></span>TEAM 1</f7-link>
+              <f7-link tab-link="#tabhh1" tab-link-active><span></span>{{ fixture.homeTeamName }}</f7-link>
               <f7-link tab-link="#tabhh2">HEAD TO HEAD</f7-link>
-              <f7-link tab-link="#tabhh3">TEAM 2</f7-link>
+              <f7-link tab-link="#tabhh3">{{ fixture.awayTeamName }}</f7-link>
           </f7-toolbar>
           <f7-tabs swipeable class="bg-tabs">
-            <f7-tab id="tabhh1" tab-active></f7-tab> 
+            <f7-tab id="tabhh1" tab-active>
+              <f7-list  class="teams .bg-list">
+                  <f7-list-item v-for="(home, key) in homeTeamsGames.fixtures" :key="key" class="team"> 
+                  <div class="bottom-b">
+                          <div class="left-bot">
+                            <div class="time-block">
+                              <span>{{ home.status }}</span>
+                            </div>
+                            <div class="team-block"> 
+                              <span>{{ home.homeTeamName }}</span>
+                              <span>{{ home.awayTeamName }}</span>
+                            </div>
+                          </div>
+                          <div class="right-bot">
+                            <div class="point-block">
+                              <span>{{ home.result.goalsHomeTeam }}</span>
+                              <span>{{ home.result.goalsAwayTeam }}</span>
+                            </div>
+                          </div>
+                        </div> 
+                  </f7-list-item>
+              </f7-list>
+            </f7-tab> 
             <f7-tab id="tabhh2">
               <f7-block class="team">
                 <div class="top-b"> 
                     <img src="../../../static/img/flag.png" alt="">
-                    <p>Graet soccer tournament</p>
+                    <p>{{ caption }}</p>
                     <f7-link href="" class="like"></f7-link>
                   </div> 
               </f7-block>
@@ -56,9 +78,8 @@
                   <div class="bottom-b">
                           <div class="left-bot">
                             <div class="time-block">
-                              <span></span>
+                              <span>{{ head2.status }}</span>
                             </div>
-
                             <div class="team-block"> 
                               <span>{{ head2.homeTeamName }}</span>
                               <span>{{ head2.awayTeamName }}</span>
@@ -69,17 +90,37 @@
                               <span>{{ head2.result.goalsHomeTeam }}</span>
                               <span>{{ head2.result.goalsAwayTeam }}</span>
                             </div>
-
+                          </div>
+                        </div> 
+                  </f7-list-item>
+              </f7-list>        
+            </f7-tab>
+            <f7-tab id="tabhh3">
+              <f7-list  class="teams .bg-list">
+                  <f7-list-item v-for="(away, key) in awayTeamsGames.fixtures" :key="key" class="team"> 
+                  <div class="bottom-b">
+                          <div class="left-bot">
+                            <div class="time-block">
+                              <span>{{ away.status }}</span>
+                            </div>
+                            <div class="team-block"> 
+                              <span>{{ away.homeTeamName }}</span>
+                              <span>{{ away.awayTeamName }}</span>
+                            </div>
+                          </div>
+                          <div class="right-bot">
+                            <div class="point-block">
+                              <span>{{ away.result.goalsHomeTeam }}</span>
+                              <span>{{ away.result.goalsAwayTeam }}</span>
+                            </div>
                           </div>
                         </div> 
                   </f7-list-item>
               </f7-list>
             </f7-tab>
-            <f7-tab id="tabhh3">Tab 3 content...</f7-tab>
           </f7-tabs> 
         </f7-tab>
       </f7-tabs>
-    
   </f7-page>
 </template>
 
@@ -89,22 +130,46 @@ export default {
   data() {
     return {
       isLoading: true,
-      head2head: []
+      head2head: [],
+      fixture: [],
+      caption: "",
+      homeTeamsGames: [],
+      awayTeamsGames: []
     };
   },
   mounted() {
     let headToHeadId = this.$f7route.params.id;
-    console.log(headToHeadId)
+    this.caption = this.$f7route.context.caption;
     HTTP.get("fixtures/" + headToHeadId)
       .then(response => {
-        // console.log(response.data)
         this.head2head = response.data.head2head;
-        
+        this.fixture = response.data.fixture;
+        let teamHomeHref = this.fixture._links.homeTeam.href;
+        let teamHomeId = teamHomeHref.match(/[0-9]\d+/);
+        let teamAwayHref = this.fixture._links.awayTeam.href;
+        let teamAwayId = teamAwayHref.match(/[0-9]\d+/);
+        HTTP.get("teams/" + teamHomeId[0] + "/fixtures")
+          .then(response => {
+            this.homeTeamsGames = response.data;
+            console.log(response.data);
+          })
+          .catch(function(error) {
+            this.homeTeamsGames = "Data is not avaliable";
+          });
+        HTTP.get("teams/" + teamAwayId[0] + "/fixtures")
+          .then(response => {
+            this.awayTeamsGames = response.data;
+            console.log(response.data);
+          })
+          .catch(function(error) {
+            this.awayTeamsGames = "Data is not avaliable";
+          });
       })
       .catch(function(error) {
         this.head2head = "Data is not avaliable";
+        this.fixture = "Data is not avaliable";
       });
-  },
+  }
 };
 </script>
 <style>
@@ -125,14 +190,14 @@ export default {
 .md .head-live-left {
   justify-content: flex-start;
   display: flex;
-  width: 50%;
+  width: 80%;
 }
 .md .head-live-left .name-block p {
   margin: 0px;
   line-height: 17px;
   color: #fff;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
 }
 .md .head-live-left .name-block h5 {
   margin: 0px;
@@ -144,13 +209,14 @@ export default {
 }
 .md .head-live-left .time-block span {
   color: #fff;
-  text-align: center;
+  font-size: 10px;
 }
 .md .head-live-right {
   text-align: right;
-  width: 50%;
+  width: 20%;
   color: #fff;
   font-weight: 400;
+  font-size: 10px;
 }
 .md .head-title {
   color: #fdf018;
