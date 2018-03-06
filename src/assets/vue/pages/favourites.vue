@@ -33,7 +33,7 @@
                         <span>{{ fav.result.goalsHomeTeam }}</span>
                         <span>{{ fav.result.goalsAwayTeam }}</span>
                       </div>
-                      <f7-link href="#" v-on:click="favourite(index)" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
+                      <f7-checkbox @change="favourData" id="check" :checked="check.action" :value="JSON.stringify(fav)" class="like"></f7-checkbox>
                     </div>
                   </div> 
             </f7-list-item>
@@ -50,25 +50,67 @@ export default {
     return {
       storage: window.localStorage,
       isLoading: true,
-      favour: []
+      favour: [],
+       check: {
+        action: false
+      }
     };
   },
   mounted() {
-    this.favour = JSON.parse(this.storage.getItem("favour"));
-    console.log(this.favour)
+    if (this.storage.getItem("favour")) {
+      this.favour = JSON.parse(this.storage.getItem("favour"));
+    }
   },
   methods: {
-    favourite() {
-      this.isLoading = !this.isLoading;
+    favourData(event) {
+      let self = this;
+      const value = JSON.parse(event.target.value);
+      if (event.target.checked) {
+        this.favour.push(value);
+      } else {
+        this.favour.forEach(function(item, i) {
+          if (item.awayTeamName == value.awayTeamName) {
+            self.favour.splice(i, 1);
+          }
+        });
+      }
+      this.storage.setItem("favour", JSON.stringify(this.favour));
+      this.check.action = !this.check.action;
+      this.storage.setItem("check", JSON.stringify(this.check));
     }
+
   }
 };
 </script>
 <style>
-.md .favour-page .bottom-b{
+.md .icon-checkbox {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  background: url("../../../static/img/heart.png") no-repeat;
+}
+.md .checkbox i {
+  border: none;
+  width: 30px;
+  height: 30px;
+}
+.md .checkbox i:after {
+  background: none;
+  width: 30px;
+  height: 30px;
+}
+.md .checkbox input[type="checkbox"]:checked ~ i {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  background: url("../../../static/img/heart_ok.png") no-repeat;
+}
+.md .favour-page .bottom-b {
   position: relative;
 }
-.md .favour-page .bottom-b a{
+.md .favour-page .bottom-b a {
   color: #000;
 }
 .md .favour-page .team .bottom-b:after {

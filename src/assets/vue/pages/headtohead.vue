@@ -151,7 +151,7 @@ export default {
         HTTP.get("teams/" + teamHomeId[0] + "/fixtures")
           .then(response => {
             this.homeTeamsGames = response.data;
-            console.log(response.data);
+            //console.log(response.data);
           })
           .catch(function(error) {
             this.homeTeamsGames = "Data is not avaliable";
@@ -159,7 +159,7 @@ export default {
         HTTP.get("teams/" + teamAwayId[0] + "/fixtures")
           .then(response => {
             this.awayTeamsGames = response.data;
-            console.log(response.data);
+            //console.log(response.data);
           })
           .catch(function(error) {
             this.awayTeamsGames = "Data is not avaliable";

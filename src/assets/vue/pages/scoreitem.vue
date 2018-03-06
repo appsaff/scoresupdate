@@ -24,7 +24,7 @@
         </div> 
     </f7-block>
     <f7-list id="search-list" class="teams .bg-list">
-        <f7-list-item v-for="(fixture, index) in fixtures" :key="index" class="team">
+        <f7-list-item v-for="fixture in fixtures" :key="fixture.id" class="team">
         <div class="bottom-b">
                 <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
                 <div class="left-bot">
@@ -42,7 +42,7 @@
                     <span>{{ fixture.result.goalsHomeTeam }}</span>
                     <span>{{ fixture.result.goalsAwayTeam }}</span>
                   </div>
-                  <f7-link href="#" v-on:click="favourite(index)" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
+                  <f7-checkbox @change="favourData" :checked="false" :value="JSON.stringify(fixture)" class="like"></f7-checkbox>
                 </div>
               </div> 
         </f7-list-item>
@@ -56,40 +56,82 @@ export default {
   data() {
     return {
       storage: window.localStorage,
-      caption: '',
-      isLoading: true,
-      fixtures: []
+      caption: "",
+      fixtures: [],
+      favour: []
     };
   },
   mounted() {
     let leagueId = this.$f7route.params.id;
     this.caption = this.$f7route.context.caption;
+    if (this.storage.getItem("favour")) {
+      this.favour = JSON.parse(this.storage.getItem("favour"));
+    }
     HTTP.get("competitions/" + leagueId + "/fixtures")
       .then(response => {
         this.fixtures = response.data.fixtures;
+        response.data.fixtures.forEach(function(item, i) {
+          response.data.favour.forEach(function(item, i) {
+
+
+          });
+        });
       })
       .catch(function(error) {
         this.fixtures = "Data is not avaliable";
       });
   },
+
   methods: {
-    getHeadToHead(link) {
-      let id = link.match(/[0-9]\d+/);
-      this.$f7router.navigate("/headtohead/" + id, { context: { caption: this.caption } });
-      //  Child sent context
-      // this.$f7router.navigate("/headtohead/" , { context: { id: id } });
-    },
-    favourite(index) {
-      let favourite = [];
-      favourite.push(this.fixtures[index]);
-      this.storage.setItem("favour", JSON.stringify(favourite));
-      this.isLoading = !this.isLoading;
-    } 
+    favourData(event) {
+      let self = this;
+      const value = JSON.parse(event.target.value);
+      if (event.target.checked) {
+        this.favour.push(value);
+      } else {
+        this.favour.forEach(function(item, i) {
+          if (item.awayTeamName == value.awayTeamName) {
+            self.favour.splice(i, 1);
+          }
+        });
+      }
+      this.storage.setItem("favour", JSON.stringify(this.favour));
+    }
+  },
+  getHeadToHead(link) {
+    let id = link.match(/[0-9]\d+/);
+    this.$f7router.navigate("/headtohead/" + id, {
+      context: { caption: this.caption }
+    });
   }
 };
 </script>
 <style>
-.md .left-bot{
+.md .icon-checkbox {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  background: url("../../../static/img/heart.png") no-repeat;
+}
+.md .checkbox i {
+  border: none;
+  width: 30px;
+  height: 30px;
+}
+.md .checkbox i:after {
+  background: none;
+  width: 30px;
+  height: 30px;
+}
+.md .checkbox input[type="checkbox"]:checked ~ i {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  background: url("../../../static/img/heart_ok.png") no-repeat;
+}
+.md .left-bot {
   width: 100%;
 }
 .md .scoreit-page .link-head {
@@ -185,6 +227,6 @@ export default {
   position: absolute;
   border-bottom: 1px solid #000;
   width: 100%;
-  bottom: 0;
+  bottom: -5px;
 }
 </style>
