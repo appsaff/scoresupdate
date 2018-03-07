@@ -33,7 +33,7 @@
                         <span>{{ fav.result.goalsHomeTeam }}</span>
                         <span>{{ fav.result.goalsAwayTeam }}</span>
                       </div>
-                      <f7-checkbox @change="favourData" id="check" :checked="check.action" :value="JSON.stringify(fav)" class="like"></f7-checkbox>
+                      <f7-checkbox @change="removeItem(index)" :checked="true" :value="JSON.stringify(fav)" class="like"></f7-checkbox>
                     </div>
                   </div> 
             </f7-list-item>
@@ -50,10 +50,7 @@ export default {
     return {
       storage: window.localStorage,
       isLoading: true,
-      favour: [],
-       check: {
-        action: false
-      }
+      favour: []
     };
   },
   mounted() {
@@ -62,23 +59,16 @@ export default {
     }
   },
   methods: {
-    favourData(event) {
-      let self = this;
-      const value = JSON.parse(event.target.value);
-      if (event.target.checked) {
-        this.favour.push(value);
-      } else {
-        this.favour.forEach(function(item, i) {
-          if (item.awayTeamName == value.awayTeamName) {
-            self.favour.splice(i, 1);
-          }
-        });
-      }
-      this.storage.setItem("favour", JSON.stringify(this.favour));
-      this.check.action = !this.check.action;
-      this.storage.setItem("check", JSON.stringify(this.check));
-    }
+    removeItem(index) {
+      let storagefavorites = JSON.parse(this.storage.getItem("favour"));
 
+      storagefavorites.forEach(function(item, i) {
+        if (i == index) {
+          storagefavorites.splice(i, 1);
+        }
+      });
+      this.storage.setItem("favour", JSON.stringify(storagefavorites));
+    }
   }
 };
 </script>
@@ -118,7 +108,7 @@ export default {
   position: absolute;
   border-bottom: 1px solid #000;
   width: 100%;
-  bottom: 0;
+  bottom: -5px;
 }
 .md .head-title {
   color: #fdf018;

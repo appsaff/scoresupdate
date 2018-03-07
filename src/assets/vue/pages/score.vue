@@ -31,9 +31,10 @@
               <div class="top-b"> 
                 <img src="../../../static/img/flag.png" alt="">
                 <p>Graet soccer tournament</p>
-                <f7-link href="#" v-on:click="favourite" class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
+                <f7-link href="#"  class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
               </div>
               <f7-link class="bottom-b">
+                <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
                 <div class="left-bot">
                   <div class="time-block">
                     <span>{{ fixture.status }}</span>
@@ -43,6 +44,7 @@
                     <span>{{ fixture.awayTeamName }}</span>
                   </div>
                 </div>
+                </f7-link>
                 <div class="right-bot">
                   <div class="point-block">
                     <span>{{ fixture.result.goalsHomeTeam }}</span>
@@ -82,17 +84,12 @@ export default {
       });
   },
   methods: {
-    favourite() {
-      this.isLoading = !this.isLoading;
+    getHeadToHead(link) {
+      let id = link.match(/[0-9]\d+/);
+      this.$f7router.navigate("/headtohead/" + id, {
+        context: { caption: this.caption }
+      });
     },
-    // getMatch() {
-    //   let hrefMatch = this.fixtures[0]._links.self.href;
-    //   console.log(this.fixtures[0]._links.self.href)
-    //   let id = hrefMatch.match(/[0-9]\d+/);
-    //   this.$f7router.navigate("/headtohead/" + id);
-    //   //  Child sent context
-    //   // this.$f7router.navigate("/headtohead/" , { context: { id: id } });
-    // }
   }
 };
 </script>
@@ -154,6 +151,9 @@ export default {
   width: 100%;
   align-items: center;
   justify-content: space-between;
+  color: #000;
+}
+.teams .team .item-inner .bottom-b a{
   color: #000;
 }
 .like {

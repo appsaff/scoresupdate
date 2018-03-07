@@ -11,9 +11,9 @@
     <f7-block class="search-block">
     <f7-searchbar
       placeholder="Search Results"
-      search-container="#search-list"
-      search-item="li"
-      search-in=".team-block span"
+      search-container="#search-listr"
+      search-item=".team"
+      search-in=".fixName"
     ></f7-searchbar> 
     </f7-block>
     <f7-block class="team">
@@ -23,7 +23,7 @@
           <f7-link href="#" class="like"></f7-link>
         </div> 
     </f7-block>
-    <f7-list id="search-list" class="teams .bg-list">
+    <f7-list id="search-listr" class="teams .bg-list">
         <f7-list-item v-for="fixture in fixtures" :key="fixture.id" class="team">
         <div class="bottom-b">
                 <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
@@ -32,8 +32,8 @@
                     <span>{{ fixture.status }}</span>
                   </div>
                   <div class="team-block">
-                    <span>{{ fixture.homeTeamName }}</span>
-                    <span>{{ fixture.awayTeamName }}</span>
+                    <span class="fixName">{{ fixture.homeTeamName }}</span>
+                    <span class="fixName">{{ fixture.awayTeamName }}</span>
                   </div>
                 </div>
                 </f7-link>
@@ -42,7 +42,8 @@
                     <span>{{ fixture.result.goalsHomeTeam }}</span>
                     <span>{{ fixture.result.goalsAwayTeam }}</span>
                   </div>
-                  <f7-checkbox @change="favourData" :checked="false" :value="JSON.stringify(fixture)" class="like"></f7-checkbox>
+                  <f7-checkbox @change="favourData" :checked="fixture.favoriteStatus" :value="JSON.stringify(fixture)" class="like"></f7-checkbox>
+                  
                 </div>
               </div> 
         </f7-list-item>
@@ -69,20 +70,30 @@ export default {
     }
     HTTP.get("competitions/" + leagueId + "/fixtures")
       .then(response => {
-        this.fixtures = response.data.fixtures;
+        let self = this;
         response.data.fixtures.forEach(function(item, i) {
-          response.data.favour.forEach(function(item, i) {
-
-
+          let favoriteStatus = false;
+          self.favour.forEach(function(tip, i) {
+            if (item.awayTeamName === tip.awayTeamName) {
+              favoriteStatus = true;
+            }
           });
+          item["favoriteStatus"] = favoriteStatus;
+          self.fixtures.push(item);
         });
       })
       .catch(function(error) {
-        this.fixtures = "Data is not avaliable";
+        response.data.fixtures = "Data is not avaliable";
       });
   },
 
   methods: {
+    getHeadToHead(link) {
+      let id = link.match(/[0-9]\d+/);
+      this.$f7router.navigate("/headtohead/" + id, {
+        context: { caption: this.caption }
+      });
+    },
     favourData(event) {
       let self = this;
       const value = JSON.parse(event.target.value);
@@ -97,12 +108,6 @@ export default {
       }
       this.storage.setItem("favour", JSON.stringify(this.favour));
     }
-  },
-  getHeadToHead(link) {
-    let id = link.match(/[0-9]\d+/);
-    this.$f7router.navigate("/headtohead/" + id, {
-      context: { caption: this.caption }
-    });
   }
 };
 </script>

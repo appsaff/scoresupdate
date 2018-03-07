@@ -22,7 +22,7 @@
         </div>
       </div> 
       <div class="head-live-right"> 
-        {{ fixture.date }}
+        {{ showDate(fixture.date) }}
       </div> 
     </f7-block>
     <div class="container">
@@ -49,6 +49,7 @@
                           <div class="left-bot">
                             <div class="time-block">
                               <span>{{ home.status }}</span>
+                              <span class="head-date">{{ showDate(home.date) }}</span>
                             </div>
                             <div class="team-block"> 
                               <span>{{ home.homeTeamName }}</span>
@@ -79,6 +80,7 @@
                           <div class="left-bot">
                             <div class="time-block">
                               <span>{{ head2.status }}</span>
+                              <span class="head-date">{{ showDate(head2.date) }}</span>
                             </div>
                             <div class="team-block"> 
                               <span>{{ head2.homeTeamName }}</span>
@@ -102,6 +104,7 @@
                           <div class="left-bot">
                             <div class="time-block">
                               <span>{{ away.status }}</span>
+                              <span class="head-date">{{ showDate(away.date) }}</span>
                             </div>
                             <div class="team-block"> 
                               <span>{{ away.homeTeamName }}</span>
@@ -169,10 +172,28 @@ export default {
         this.head2head = "Data is not avaliable";
         this.fixture = "Data is not avaliable";
       });
+  },
+  methods: {
+    showDate(date) {
+      let tempDate = new Date(date);
+
+      var date = tempDate.getDate().toString();
+      var month = (tempDate.getMonth() + 1).toString();
+      var year = tempDate.getFullYear().toString();
+
+      date = date[1] ? date : "0" + date[0];
+      month = month[1] ? month : "0" + month[0];
+      year = year[2] + year[3];
+
+      return date + "." + month + "." + year;
+    }
   }
 };
 </script>
 <style>
+.teams .team .item-inner .bottom-b .head-date {
+  font-size: 12px;
+}
 .md .head-page .bottom-b {
   padding-bottom: 7px;
 }
