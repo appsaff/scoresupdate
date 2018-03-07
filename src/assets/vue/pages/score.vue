@@ -75,6 +75,7 @@ export default {
     };
   },
   mounted() {
+    
     HTTP.get("fixtures/")
       .then(response => {
         this.fixtures = response.data.fixtures;

@@ -18,10 +18,10 @@
     </f7-block>
     <f7-list id="search-list" class="teams .bg-list">
       <f7-list-item  v-for="league in leagues" :key="league.id" class="team">
-        <f7-link @click="getLeague(league.id , league.caption)" class="menu-link">
+        <f7-link @click="getLeague(league.id ,league.name)" class="menu-link">
         <div  class="top-b"> 
           <img src="../../../static/img/flag.png" alt="">
-          <span class="name-link" ><p>{{ league.caption }}</p></span>
+          <span class="name-link" ><p>{{ league.name }}</p></span>
           <span class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></span>
         </div> 
         </f7-link>
@@ -39,17 +39,18 @@ export default {
     };
   },
   mounted() {
-      HTTP.get("competitions/")
+      
+      HTTP.get("getAllLeagues.json")
       .then(response => {
-       this.leagues = response.data
+       this.leagues = response.data.league
       })
       .catch(function(error) {
         console.log(error);
       });
   },
   methods:{
-    getLeague(id, caption){
-      this.$f7router.navigate("/scoreitem/" + id, { context: { caption: caption } });
+    getLeague(id, name){
+      this.$f7router.navigate("/scoreitem/" + id, { context: { name: name } });
     }
   }
 };

@@ -19,31 +19,30 @@
     <f7-block class="team">
       <div class="top-b"> 
           <img src="../../../static/img/flag.png" alt="">
-          <p>{{ caption }}</p>
+          <p>{{ name }}</p>
           <f7-link href="#" class="like"></f7-link>
         </div> 
     </f7-block>
     <f7-list id="search-listr" class="teams .bg-list">
-        <f7-list-item v-for="fixture in fixtures" :key="fixture.id" class="team">
+        <f7-list-item v-for="match in matchs" :key="match.id" class="team">
         <div class="bottom-b">
                 <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
                 <div class="left-bot">
                   <div class="time-block">
-                    <span>{{ fixture.status }}</span>
+                    <span>{{ match.time }}</span>
                   </div>
                   <div class="team-block">
-                    <span class="fixName">{{ fixture.homeTeamName }}</span>
-                    <span class="fixName">{{ fixture.awayTeamName }}</span>
+                    <span class="fixName">{{ match.homeTeam }}</span>
+                    <span class="fixName">{{ match.awayTeam }}</span>
                   </div>
                 </div>
                 </f7-link>
                 <div class="right-bot">
                   <div class="point-block">
-                    <span>{{ fixture.result.goalsHomeTeam }}</span>
-                    <span>{{ fixture.result.goalsAwayTeam }}</span>
+                    <span>{{ match.homeGoals }}</span>
+                    <span>{{ match.awayGoals }}</span>
                   </div>
-                  <f7-checkbox @change="favourData" :checked="fixture.favoriteStatus" :value="JSON.stringify(fixture)" class="like"></f7-checkbox>
-                  
+                  <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
                 </div>
               </div> 
         </f7-list-item>
@@ -57,33 +56,38 @@ export default {
   data() {
     return {
       storage: window.localStorage,
-      caption: "",
-      fixtures: [],
+      name: "",
+      matchs: [],
       favour: []
     };
   },
   mounted() {
-    let leagueId = this.$f7route.params.id;
-    this.caption = this.$f7route.context.caption;
-    if (this.storage.getItem("favour")) {
-      this.favour = JSON.parse(this.storage.getItem("favour"));
-    }
-    HTTP.get("competitions/" + leagueId + "/fixtures")
+    // let leagueId = this.$f7route.params.id;
+    // this.caption = this.$f7route.context.caption;
+    // if (this.storage.getItem("favour")) {
+    //   this.favour = JSON.parse(this.storage.getItem("favour"));
+    // }
+    console.log(this.$f7route.context)
+    this.name = this.$f7route.context.name;
+    HTTP.get("getFixturesByDateIntervalAndLeague.json")
+    // HTTP.get("competitions/" + leagueId + "/fixtures")
       .then(response => {
-        let self = this;
-        response.data.fixtures.forEach(function(item, i) {
-          let favoriteStatus = false;
-          self.favour.forEach(function(tip, i) {
-            if (item.awayTeamName === tip.awayTeamName) {
-              favoriteStatus = true;
-            }
-          });
-          item["favoriteStatus"] = favoriteStatus;
-          self.fixtures.push(item);
-        });
+        this.matchs = response.data.match
+        // let self = this;
+        // response.data.fixtures.forEach(function(item, i) {
+        //   let favoriteStatus = false;
+        //   self.favour.forEach(function(tip, i) {
+        //     if (item.awayTeamName === tip.awayTeamName) {
+        //       favoriteStatus = true;
+        //     }
+        //   });
+        //   item["favoriteStatus"] = favoriteStatus;
+        //   self.fixtures.push(item);
+        // });
       })
       .catch(function(error) {
-        response.data.fixtures = "Data is not avaliable";
+        this.matchs = 'Error'
+        // response.data.fixtures = "Data is not avaliable";
       });
   },
 
