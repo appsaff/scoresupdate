@@ -28,10 +28,6 @@ export default [
     component: require('./assets/vue/pages/favourites.vue')
   },
   {
-    path: '/dynamic-route/blog/:blogId/post/:postId/',
-    component: require('./assets/vue/pages/dynamic-route.vue')
-  },
-  {
     path: '/panel-left/',
     component: require('./assets/vue/pages/panel-left.vue')
   },

@@ -35,21 +35,20 @@ import { HTTP } from "../../js/http";
 export default {
   data() {
     return {
-      leagues: [],
+      leagues: []
     };
   },
   mounted() {
-      
-      HTTP.get("getAllLeagues.json")
+    HTTP.get("getAllLeagues")
       .then(response => {
-       this.leagues = response.data.league
+        this.leagues = response.data.league;
       })
       .catch(function(error) {
         console.log(error);
       });
   },
-  methods:{
-    getLeague(id, name){
+  methods: {
+    getLeague(id, name) {
       this.$f7router.navigate("/scoreitem/" + id, { context: { name: name } });
     }
   }
@@ -82,7 +81,7 @@ export default {
 .md .menu-page .team {
   margin: 0px;
 }
-.md .menu-page .team .menu-link{
+.md .menu-page .team .menu-link {
   width: 100%;
 }
 .menu-page .search-block {

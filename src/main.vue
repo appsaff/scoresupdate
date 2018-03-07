@@ -1,23 +1,22 @@
 <template>
-    <!-- App -->
-    <div id="app">
-        <f7-statusbar></f7-statusbar>
-        <f7-panel left cover theme-dark>
-            <f7-view url="/panel-left/" links-view=".view-main" />
-        </f7-panel>
-        <f7-views>
-        <f7-view url="/score/" :main="true" id="main-view" class="ios-edges"></f7-view>
-            <f7-toolbar bottom-md tabbar labels class="toolbar-bot">
-                <f7-link href="/score/" icon-if-md="ion:ios-football" text="SCORE" ><f7-icon ion="" size="35px"></f7-icon></f7-link>
-                <f7-link href="#" icon-if-md="ion:ios-world" text="LIVE"></f7-link>
-                <f7-link href="/favourites/" icon-if-md="ion:android-star" text="FAVOURITES" ></f7-link>
-                <f7-link href="/menu/" icon-if-md="ion:navicon-round" text="MENU"></f7-link>
-                <f7-link popup-open="#popup" icon-if-md="ion:paper-airplane" text="SUBSCRIBE"></f7-link>
-                <f7-link href="/news/" icon-if-md="ion:earth" text="NEWS"></f7-link>
-            </f7-toolbar>
-        </f7-views>
-        
-        <!-- Popup -->
+  <!-- App -->
+  <div id="app">
+    <f7-statusbar></f7-statusbar>
+    <f7-panel left cover theme-dark>
+      <f7-view url="/panel-left/" links-view=".view-main" />
+    </f7-panel>
+    <f7-views>
+    <f7-view url="/score/" :main="true" id="main-view" class="ios-edges"></f7-view>
+      <f7-toolbar bottom-md tabbar labels class="toolbar-bot">
+        <f7-link href="/score/" icon-if-md="ion:ios-football" text="SCORE" ><f7-icon ion="" size="35px"></f7-icon></f7-link>
+        <f7-link href="#" icon-if-md="ion:ios-world" text="LIVE"></f7-link>
+        <f7-link href="/favourites/" icon-if-md="ion:android-star" text="FAVOURITES" ></f7-link>
+        <f7-link href="/menu/" icon-if-md="ion:navicon-round" text="MENU"></f7-link>
+        <f7-link popup-open="#popup" icon-if-md="ion:paper-airplane" text="SUBSCRIBE"></f7-link>
+        <f7-link href="/news/" icon-if-md="ion:earth" text="NEWS"></f7-link>
+      </f7-toolbar>
+    </f7-views>
+    <!-- Popup -->
     <f7-popup id="popup">
       <f7-view>
         <f7-page class="popup-page">
@@ -51,13 +50,8 @@
         </f7-page>
       </f7-view>
     </f7-popup>
-
-    </div>
+  </div>
 </template>
 <script>
-export default {
-    mounted() {
-        console.log(this.$device)
-    },
-}
+export default {};
 </script>
