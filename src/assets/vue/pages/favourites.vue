@@ -20,18 +20,18 @@
                     <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
                     <div class="left-bot">
                       <div class="time-block">
-                        <span>{{ fav.status }}</span>
+                        <span>{{ fav.time }}</span>
                       </div>
                       <div class="team-block">
-                        <span>{{ fav.homeTeamName }}</span>
-                        <span>{{ fav.awayTeamName }}</span>
+                        <span>{{ fav.homeTeam }}</span>
+                        <span>{{ fav.awayTeam }}</span>
                       </div>
                     </div>
                     </f7-link>
                     <div class="right-bot">
                       <div class="point-block">
-                        <span>{{ fav.result.goalsHomeTeam }}</span>
-                        <span>{{ fav.result.goalsAwayTeam }}</span>
+                        <span>{{ fav.homeGoals }}</span>
+                        <span>{{ fav.awayGoals }}</span>
                       </div>
                       <f7-checkbox @change="removeItem(index)" :checked="true" :value="JSON.stringify(fav)" class="like"></f7-checkbox>
                     </div>
@@ -56,6 +56,7 @@ export default {
   mounted() {
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
+      console.log(this.favour)
     }
   },
   methods: {

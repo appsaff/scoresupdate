@@ -13,16 +13,16 @@
       <div class="head-live-left"> 
         <div class="time-block">
           <img src="../../../static/img/flag.png" alt="">
-          <span>{{ fixture.status }}</span>
+          <span>{{ matchs.time }}</span>
         </div>
         <div class="name-block">
-          <h5>{{ caption }}</h5>
-          <p>{{ fixture.homeTeamName }}</p>
-          <p>{{ fixture.awayTeamName }}</p>
+          <h5>{{ matchs.league }}</h5>
+          <p>{{ matchs.homeTeam }}</p>
+          <p>{{ matchs.awayTeam }}</p>
         </div>
       </div> 
       <div class="head-live-right"> 
-        {{ showDate(fixture.date) }}
+        {{ showDate(matchs.date) }}
       </div> 
     </f7-block>
     <div class="container">
@@ -33,10 +33,47 @@
     </div>
     <f7-tabs swipeable class="bg-tabs">
         <f7-tab id="tabh1" tab-active>
-        
+          <f7-list class="inf-list">
+            <f7-list-item>
+              <f7-list-item-cell>
+                <f7-list-item-row>
+                <f7-list-item-cell class="inf-team">{{ matchs.homeTeam }}</f7-list-item-cell>
+                <f7-list-item-cell class="inf-team">{{ matchs.awayTeam }}</f7-list-item-cell>
+              </f7-list-item-row>
+              <f7-list-item-row>
+                <f7-list-item-cell class="inf-title">Goals</f7-list-item-cell>
+              </f7-list-item-row>
+              <f7-list-item-row>
+                <f7-list-item-cell>{{ devideElem(matchs.homeGoalDetails) }}</f7-list-item-cell>
+                <f7-list-item-cell>{{ devideElem(matchs.awayGoalDetails) }}</f7-list-item-cell>
+              </f7-list-item-row>
+              <f7-list-item-row>
+                <f7-list-item-cell class="inf-title">Team Formation</f7-list-item-cell>
+              </f7-list-item-row>
+              <f7-list-item-row>
+                <f7-list-item-cell>{{ matchs.homeTeamFormation }}</f7-list-item-cell>
+                <f7-list-item-cell>{{ matchs.awayTeamFormation }}</f7-list-item-cell>
+              </f7-list-item-row>
+              <f7-list-item-row>
+                <f7-list-item-cell class="inf-title">Yellow Cards</f7-list-item-cell>
+              </f7-list-item-row>
+              <f7-list-item-row>
+                <f7-list-item-cell>{{ devideElem(matchs.homeTeamYellowCardDetails) }}</f7-list-item-cell>
+                <f7-list-item-cell>{{ devideElem(matchs.awayTeamYellowCardDetails) }}</f7-list-item-cell>
+              </f7-list-item-row>
+              <f7-list-item-row>
+                <f7-list-item-cell class="inf-title">Stadium</f7-list-item-cell>
+              </f7-list-item-row>
+              <f7-list-item-row>
+                <f7-list-item-cell>{{ matchs.stadium }}</f7-list-item-cell>
+              </f7-list-item-row>
+              </f7-list-item-cell>
+            </f7-list-item>
+            <f7-list-item></f7-list-item>
+          </f7-list>
         </f7-tab>
         <f7-tab id="tabh2">
-          <f7-toolbar  tabbar class="tabbar-head-second">
+          <!-- <f7-toolbar  tabbar class="tabbar-head-second">
               <f7-link tab-link="#tabhh1" tab-link-active><span></span>{{ fixture.homeTeamName }}</f7-link>
               <f7-link tab-link="#tabhh2">HEAD TO HEAD</f7-link>
               <f7-link tab-link="#tabhh3">{{ fixture.awayTeamName }}</f7-link>
@@ -121,7 +158,7 @@
                   </f7-list-item>
               </f7-list>
             </f7-tab>
-          </f7-tabs> 
+          </f7-tabs>  -->
         </f7-tab>
       </f7-tabs>
   </f7-page>
@@ -132,48 +169,33 @@ import { HTTP } from "../../js/http";
 export default {
   data() {
     return {
-      isLoading: true,
-      head2head: [],
-      fixture: [],
-      caption: "",
-      homeTeamsGames: [],
-      awayTeamsGames: []
+      storage: window.localStorage,
+      matchs: [],
+      favour: []
     };
   },
   mounted() {
-    let headToHeadId = this.$f7route.params.id;
-    this.caption = this.$f7route.context.caption;
-    HTTP.get("fixtures/" + headToHeadId)
+    HTTP.get("getLiveScore")
       .then(response => {
-        this.head2head = response.data.head2head;
-        this.fixture = response.data.fixture;
-        let teamHomeHref = this.fixture._links.homeTeam.href;
-        let teamHomeId = teamHomeHref.match(/[0-9]\d+/);
-        let teamAwayHref = this.fixture._links.awayTeam.href;
-        let teamAwayId = teamAwayHref.match(/[0-9]\d+/);
-        HTTP.get("teams/" + teamHomeId[0] + "/fixtures")
-          .then(response => {
-            this.homeTeamsGames = response.data;
-            //console.log(response.data);
-          })
-          .catch(function(error) {
-            this.homeTeamsGames = "Data is not avaliable";
-          });
-        HTTP.get("teams/" + teamAwayId[0] + "/fixtures")
-          .then(response => {
-            this.awayTeamsGames = response.data;
-            //console.log(response.data);
-          })
-          .catch(function(error) {
-            this.awayTeamsGames = "Data is not avaliable";
-          });
+        this.matchs = response.data.match;
       })
       .catch(function(error) {
-        this.head2head = "Data is not avaliable";
-        this.fixture = "Data is not avaliable";
+        this.matchs = "Error";
       });
+      
   },
   methods: {
+    devideElem(elem){
+      let data = [];
+      if(elem) {
+        data = elem.split(";");
+        data.forEach(element => {
+          console.log(element)
+          return element;
+        });
+      } 
+      //console.log(data)
+    },
     showDate(date) {
       let tempDate = new Date(date);
 
@@ -191,6 +213,21 @@ export default {
 };
 </script>
 <style>
+.md .inf-list{
+  margin: 0px;
+}
+.md .inf-team{
+  text-align: center;
+  padding: 5px 10px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.md .inf-title{
+  padding: 5px 10px;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: rgba(127, 48, 140, 0.18);
+}
 .teams .team .item-inner .bottom-b .head-date {
   font-size: 12px;
 }

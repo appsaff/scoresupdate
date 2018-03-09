@@ -24,9 +24,9 @@
         </div> 
     </f7-block>
     <f7-list id="search-listr" class="teams .bg-list">
-        <f7-list-item v-for="match in matchs" :key="match.id" class="team">
+        <f7-list-item v-for="(match, index) in matchs" :key="index" class="team">
         <div class="bottom-b">
-                <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
+                <f7-link href="/headtohead/" class="link-head">
                 <div class="left-bot">
                   <div class="time-block">
                     <span>{{ match.time }}</span>
@@ -63,41 +63,39 @@ export default {
   },
   mounted() {
     // let leagueId = this.$f7route.params.id;
-    // this.caption = this.$f7route.context.caption;
-    // if (this.storage.getItem("favour")) {
-    //   this.favour = JSON.parse(this.storage.getItem("favour"));
-    // }
-    console.log(this.$f7route.context)
     this.name = this.$f7route.context.name;
-    HTTP.get("getFixturesByDateIntervalAndLeague.json")
+    if (this.storage.getItem("favour")) {
+      this.favour = JSON.parse(this.storage.getItem("favour"));
+    }
+    HTTP.get("getFixturesByDateIntervalAndLeague")
     // HTTP.get("competitions/" + leagueId + "/fixtures")
       .then(response => {
         this.matchs = response.data.match
-        // let self = this;
-        // response.data.fixtures.forEach(function(item, i) {
-        //   let favoriteStatus = false;
-        //   self.favour.forEach(function(tip, i) {
-        //     if (item.awayTeamName === tip.awayTeamName) {
-        //       favoriteStatus = true;
-        //     }
-        //   });
-        //   item["favoriteStatus"] = favoriteStatus;
-        //   self.fixtures.push(item);
-        // });
+        let self = this;
+        this.matchs.forEach(function(item, i) {
+          let favoriteStatus = false;
+          self.favour.forEach(function(tip, i) {
+            if (item.id === tip.id) {
+              favoriteStatus = true;
+            }
+          });
+          item["favoriteStatus"] = favoriteStatus;
+          self.matchs.push(item);
+        });
       })
       .catch(function(error) {
-        this.matchs = 'Error'
+        this.matchs  = 'Error'
         // response.data.fixtures = "Data is not avaliable";
       });
   },
 
   methods: {
-    getHeadToHead(link) {
-      let id = link.match(/[0-9]\d+/);
-      this.$f7router.navigate("/headtohead/" + id, {
-        context: { caption: this.caption }
-      });
-    },
+    // getHeadToHead(link) {
+    //   let id = link.match(/[0-9]\d+/);
+    //   this.$f7router.navigate("/headtohead/" + id, {
+    //     context: { caption: this.caption }
+    //   });
+    // },
     favourData(event) {
       let self = this;
       const value = JSON.parse(event.target.value);
@@ -105,7 +103,7 @@ export default {
         this.favour.push(value);
       } else {
         this.favour.forEach(function(item, i) {
-          if (item.awayTeamName == value.awayTeamName) {
+          if (item.id == value.id) {
             self.favour.splice(i, 1);
           }
         });

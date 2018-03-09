@@ -76,13 +76,13 @@ export default {
   },
   mounted() {
     
-    HTTP.get("fixtures/")
-      .then(response => {
-        this.fixtures = response.data.fixtures;
-      })
-      .catch(function(error) {
-        this.fixtures = "Data is not avaliable";
-      });
+    // HTTP.get("fixtures/")
+    //   .then(response => {
+    //     this.fixtures = response.data.fixtures;
+    //   })
+    //   .catch(function(error) {
+    //     this.fixtures = "Data is not avaliable";
+    //   });
   },
   methods: {
     getHeadToHead(link) {

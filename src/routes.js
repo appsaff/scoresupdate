@@ -1,5 +1,9 @@
 export default [
   {
+    path: '/livePage/',
+    component: require('./assets/vue/pages/live.vue')
+  },
+  {
     path: '/newsPage/',
     component: require('./assets/vue/pages/newsPage.vue')
   },
@@ -12,7 +16,7 @@ export default [
     component: require('./assets/vue/pages/menu.vue')
   },
   {
-    path: '/headtohead/:id',
+    path: '/headtohead/',
     component: require('./assets/vue/pages/headtohead.vue')
   },
   {

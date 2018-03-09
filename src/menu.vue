@@ -35,19 +35,17 @@ import { HTTP } from "../../js/http";
 export default {
   data() {
     return {
-      storage: window.localStorage,
       leagues: []
     };
   },
   mounted() {
-    HTTP.get("getAllLeagues")
+    HTTP.get("getAllLeagues.json")
       .then(response => {
         this.leagues = response.data.league;
       })
       .catch(function(error) {
         console.log(error);
       });
-      
   },
   methods: {
     getLeague(id, name) {
