@@ -9,14 +9,14 @@
         </f7-nav-right>
     </f7-navbar> 
     <f7-list class="teams .bg-list">
-      <f7-list-item v-for="match in matchs" :key="match.id" class="team">
+      <f7-list-item v-for="(match, index) in matchs" :key="match.id" class="team">
               <div class="top-b"> 
                 <img src="../../../static/img/flag.png" alt="">
                 <p>{{ match.league }}</p>
                 <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
               </div>
               <f7-link class="bottom-b">
-                <f7-link class="link-head" href="/headtohead/">
+                <f7-link class="link-head" @click="getHeadToHead(index)">
                 <div class="left-bot">
                   <div class="time-block">
                     <span>{{ match.time }}</span>
@@ -54,27 +54,30 @@ export default {
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
     }
+    this.$f7.preloader.show();
     HTTP.get("getLiveScore")
       .then(response => {
         let data = response.data.match;
-
-        if (typeof data === 'object') {
+        if (data.length === 1) {
           this.matchs = [data];
         } else {
           this.matchs = data;
         }
+        this.$f7.preloader.hide();
       })
       .catch(function(error) {
         this.matchs = "Error"
+        this.$f7.preloader.hide();
       });
   },
   methods: {
-    // getHeadToHead(link) {
-    //   let id = link.match(/[0-9]\d+/);
-    //   this.$f7router.navigate("/headtohead/" + id, {
-    //     context: { caption: this.caption }
-    //   });
-    // },
+
+    getHeadToHead(id) {
+      let match = this.matchs[id]
+      this.$f7router.navigate("/headtohead/" + id, {
+        context: { match: match }
+      });
+    },
     favourData(event) {
       let self = this;
       const value = JSON.parse(event.target.value);

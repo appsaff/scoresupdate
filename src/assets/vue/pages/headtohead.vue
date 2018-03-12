@@ -44,8 +44,8 @@
                 <f7-list-item-cell class="inf-title">Goals</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
-                <f7-list-item-cell>{{ devideElem(matchs.homeGoalDetails) }}</f7-list-item-cell>
-                <f7-list-item-cell>{{ devideElem(matchs.awayGoalDetails) }}</f7-list-item-cell>
+                <f7-list-item-cell>{{ matchs.homeGoalDetails }}</f7-list-item-cell>
+                <f7-list-item-cell>{{ matchs.awayGoalDetails }}</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
                 <f7-list-item-cell class="inf-title">Team Formation</f7-list-item-cell>
@@ -58,8 +58,8 @@
                 <f7-list-item-cell class="inf-title">Yellow Cards</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
-                <f7-list-item-cell>{{ devideElem(matchs.homeTeamYellowCardDetails) }}</f7-list-item-cell>
-                <f7-list-item-cell>{{ devideElem(matchs.awayTeamYellowCardDetails) }}</f7-list-item-cell>
+                <f7-list-item-cell>{{ matchs.homeTeamYellowCardDetails }}</f7-list-item-cell>
+                <f7-list-item-cell>{{ matchs.awayTeamYellowCardDetails }}</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
                 <f7-list-item-cell class="inf-title">Stadium</f7-list-item-cell>
@@ -175,14 +175,7 @@ export default {
     };
   },
   mounted() {
-    HTTP.get("getLiveScore")
-      .then(response => {
-        this.matchs = response.data.match;
-      })
-      .catch(function(error) {
-        this.matchs = "Error";
-      });
-      
+    this.matchs = this.$f7route.context.match;
   },
   methods: {
     devideElem(elem){

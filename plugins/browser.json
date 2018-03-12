@@ -9,6 +9,9 @@
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.izzi.soccer"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "com.izzi.soccer"
     }
   },
   "dependent_plugins": {}

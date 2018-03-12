@@ -23,6 +23,7 @@
           <f7-link href="#" class="like"></f7-link>
         </div> 
     </f7-block>
+
     <f7-list id="search-listr" class="teams .bg-list">
         <f7-list-item v-for="(match, index) in matchs" :key="index" class="team">
         <div class="bottom-b">
@@ -67,10 +68,10 @@ export default {
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
     }
+    this.$f7.preloader.show();
     HTTP.get("getFixturesByDateIntervalAndLeague")
-    // HTTP.get("competitions/" + leagueId + "/fixtures")
       .then(response => {
-        this.matchs = response.data.match
+        this.matchs = response.data.match;
         let self = this;
         this.matchs.forEach(function(item, i) {
           let favoriteStatus = false;
@@ -82,9 +83,11 @@ export default {
           item["favoriteStatus"] = favoriteStatus;
           self.matchs.push(item);
         });
+        this.$f7.preloader.hide();
       })
       .catch(function(error) {
-        this.matchs  = 'Error'
+        this.matchs = "Error";
+        this.$f7.preloader.hide();
         // response.data.fixtures = "Data is not avaliable";
       });
   },

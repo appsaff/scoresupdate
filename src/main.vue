@@ -8,12 +8,12 @@
     <f7-views>
     <f7-view url="/score/" :main="true" id="main-view" class="ios-edges"></f7-view>
       <f7-toolbar bottom-md tabbar labels class="toolbar-bot">
-        <f7-link href="/score/" icon-if-md="ion:ios-football" text="SCORE" ><f7-icon ion="" size="35px"></f7-icon></f7-link>
-        <f7-link href="/livePage/" icon-if-md="ion:ios-world" text="LIVE"></f7-link>
-        <f7-link href="/favourites/" icon-if-md="ion:android-star" text="FAVOURITES" ></f7-link>
-        <f7-link href="/menu/" icon-if-md="ion:navicon-round" text="MENU"></f7-link>
-        <f7-link popup-open="#popup" icon-if-md="ion:paper-airplane" text="SUBSCRIBE"></f7-link>
-        <f7-link href="/news/" icon-if-md="ion:earth" text="NEWS"></f7-link>
+        <f7-link @click="vibr()" href="/score/" icon-if-md="ion:ios-football" text="SCORE" ><f7-icon ion="" size="35px"></f7-icon></f7-link>
+        <f7-link @click="vibr()" href="/livePage/" icon-if-md="ion:ios-world" text="LIVE"></f7-link>
+        <f7-link @click="vibr()" href="/favourites/" icon-if-md="ion:android-star" text="FAVOURITES" ></f7-link>
+        <f7-link @click="vibr()" href="/menu/" icon-if-md="ion:navicon-round" text="MENU"></f7-link>
+        <f7-link @click="vibr()" popup-open="#popup" icon-if-md="ion:paper-airplane" text="SUBSCRIBE"></f7-link>
+        <f7-link @click="vibr()" href="/news/" icon-if-md="ion:earth" text="NEWS"></f7-link>
       </f7-toolbar>
     </f7-views>
     <!-- Popup -->
@@ -53,5 +53,21 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      storage: window.localStorage,
+    }
+  },
+  methods:{
+    
+    vibr(){
+      let localSetting = JSON.parse(this.storage.getItem("settings"));
+      if(localSetting.vibration == true){
+      let time = 3000;
+      navigator.vibrate(time);
+      }
+    }
+  }
+};
 </script>

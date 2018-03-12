@@ -40,12 +40,15 @@ export default {
     };
   },
   mounted() {
+    this.$f7.preloader.show();
     HTTP.get("getAllLeagues")
       .then(response => {
         this.leagues = response.data.league;
+        this.$f7.preloader.hide();
       })
       .catch(function(error) {
         console.log(error);
+        this.$f7.preloader.hide();
       });
       
   },

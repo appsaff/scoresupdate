@@ -39,7 +39,6 @@ export default {
   },
   mounted() {
     let localSetting = JSON.parse(this.storage.getItem("settings"));
-    
     if (localSetting) {
       this.settings = localSetting;
     }
