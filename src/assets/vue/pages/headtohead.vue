@@ -178,15 +178,14 @@ export default {
     this.matchs = this.$f7route.context.match;
   },
   methods: {
-    devideElem(elem){
+    devideElem(elem) {
       let data = [];
-      if(elem) {
+      if (elem) {
         data = elem.split(";");
         data.forEach(element => {
-          console.log(element)
           return element;
         });
-      } 
+      }
       //console.log(data)
     },
     showDate(date) {
@@ -206,16 +205,16 @@ export default {
 };
 </script>
 <style>
-.md .inf-list{
+.md .inf-list {
   margin: 0px;
 }
-.md .inf-team{
+.md .inf-team {
   text-align: center;
   padding: 5px 10px;
   font-weight: 600;
   font-size: 16px;
 }
-.md .inf-title{
+.md .inf-title {
   padding: 5px 10px;
   font-weight: 600;
   font-size: 14px;

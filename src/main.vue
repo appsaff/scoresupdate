@@ -59,8 +59,7 @@ export default {
       storage: window.localStorage,
     }
   },
-  methods:{
-    
+  methods:{ 
     vibr(){
       let localSetting = JSON.parse(this.storage.getItem("settings"));
       if(localSetting.vibration == true){

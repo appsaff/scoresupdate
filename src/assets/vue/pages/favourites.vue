@@ -17,7 +17,7 @@
           <f7-list id="search-list" class="teams .bg-list">
             <f7-list-item v-for="(fav, index) in favour" :key="index" class="team">
             <div class="bottom-b">
-                    <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
+                    <f7-link class="link-head" @click="getHeadToHead(index)">
                     <div class="left-bot">
                       <div class="time-block">
                         <span>{{ fav.time }}</span>
@@ -56,7 +56,6 @@ export default {
   mounted() {
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
-      console.log(this.favour)
     }
   },
   methods: {
@@ -69,6 +68,12 @@ export default {
         }
       });
       this.storage.setItem("favour", JSON.stringify(storagefavorites));
+    },
+    getHeadToHead(id) {
+      let match = this.favour[id];
+      this.$f7router.navigate("/headtohead/" + id, {
+        context: { match: match }
+      });
     }
   }
 };

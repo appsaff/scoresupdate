@@ -58,22 +58,21 @@ export default {
     HTTP.get("getLiveScore")
       .then(response => {
         let data = response.data.match;
-        if (data.length === 1) {
-          this.matchs = [data];
-        } else {
+        if (data.length > 1) {
           this.matchs = data;
+        } else {
+          this.matchs = [data];
         }
         this.$f7.preloader.hide();
       })
       .catch(function(error) {
-        this.matchs = "Error"
+        this.matchs = "Error";
         this.$f7.preloader.hide();
       });
   },
   methods: {
-
     getHeadToHead(id) {
-      let match = this.matchs[id]
+      let match = this.matchs[id];
       this.$f7router.navigate("/headtohead/" + id, {
         context: { match: match }
       });

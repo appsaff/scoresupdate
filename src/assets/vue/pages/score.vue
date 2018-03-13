@@ -66,7 +66,7 @@
 </template>
 <script>
 import { HTTP } from "../../js/http";
-import index from 'vue';
+import index from "vue";
 export default {
   data() {
     return {
@@ -75,7 +75,6 @@ export default {
     };
   },
   mounted() {
-    
     // HTTP.get("fixtures/")
     //   .then(response => {
     //     this.fixtures = response.data.fixtures;
@@ -90,12 +89,12 @@ export default {
       this.$f7router.navigate("/headtohead/" + id, {
         context: { caption: this.caption }
       });
-    },
+    }
   }
 };
 </script>
 <style>
-.md .time-block span{
+.md .time-block span {
   width: 50px;
 }
 .md .list .is-gray {
@@ -144,7 +143,7 @@ export default {
   width: 70px;
   height: 46px;
 }
-.md .link span + span{
+.md .link span + span {
   margin-left: 0px;
 }
 .teams .team .item-inner .bottom-b {
@@ -154,7 +153,7 @@ export default {
   justify-content: space-between;
   color: #000;
 }
-.teams .team .item-inner .bottom-b a{
+.teams .team .item-inner .bottom-b a {
   color: #000;
 }
 .like {
