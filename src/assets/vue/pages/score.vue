@@ -30,25 +30,25 @@
             <f7-list-item v-for="fixture in fixtures" :key="fixture.id" class="team">
               <div class="top-b"> 
                 <img src="../../../static/img/flag.png" alt="">
-                <p>Graet soccer tournament</p>
+                <p>{{ fixture.league }}</p>
                 <f7-link href="#"  class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
               </div>
               <f7-link class="bottom-b">
                 <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
                 <div class="left-bot">
                   <div class="time-block">
-                    <span>{{ fixture.status }}</span>
+                    <span>{{ fixture.time }}</span>
                   </div>
                   <div class="team-block">
-                    <span>{{ fixture.homeTeamName }}</span>
-                    <span>{{ fixture.awayTeamName }}</span>
+                    <span>{{ fixture.homeTeam }}</span>
+                    <span>{{ fixture.awayTeam}}</span>
                   </div>
                 </div>
                 </f7-link>
                 <div class="right-bot">
                   <div class="point-block">
-                    <span>{{ fixture.result.goalsHomeTeam }}</span>
-                    <span>{{ fixture.result.goalsAwayTeam }}</span>
+                    <span>{{ fixture.homeGoals }}</span>
+                    <span>{{ fixture.awayGoals }}</span>
                   </div>
                   <f7-link href="/headtohead/" class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
                 </div>
@@ -75,13 +75,13 @@ export default {
     };
   },
   mounted() {
-    // HTTP.get("fixtures/")
-    //   .then(response => {
-    //     this.fixtures = response.data.fixtures;
-    //   })
-    //   .catch(function(error) {
-    //     this.fixtures = "Data is not avaliable";
-    //   });
+    HTTP.get("getFixturesByDateInterval")
+      .then(response => {
+        this.fixtures = response.data.match;
+      })
+      .catch(function(error) {
+        this.fixtures = "Data is not avaliable";
+      });
   },
   methods: {
     getHeadToHead(link) {
@@ -94,8 +94,9 @@ export default {
 };
 </script>
 <style>
-.md .time-block span {
+.md .teams .team .item-inner .bottom-b .time-block span {
   width: 50px;
+  font-size: 11px;
 }
 .md .list .is-gray {
   color: #786f72;

@@ -69,11 +69,15 @@ export default {
       this.favour = JSON.parse(this.storage.getItem("favour"));
     }
     this.$f7.preloader.show();
-    HTTP.get("getFixturesByDateIntervalAndLeague")
+    HTTP.get("getFixturesByDateInterval")
       .then(response => {
         this.matchs = response.data.match;
         let self = this;
         this.matchs.forEach(function(item, i) {
+          // if(self.name == item.league){
+          //   console.log(this.matchs)
+          //   //this.matchs = response.data.match;
+          // }
           let favoriteStatus = false;
           self.favour.forEach(function(tip, i) {
             if (item.id === tip.id) {
