@@ -27,28 +27,28 @@
       <f7-tabs swipeable class="bg-tabs">
         <f7-tab id="tabc1" tab-active>
           <f7-list class="teams">
-            <f7-list-item v-for="fixture in fixtures" :key="fixture.id" class="team">
+            <f7-list-item v-for="(match, index) in matchs" :key="index" class="team">
               <div class="top-b"> 
                 <img src="../../../static/img/flag.png" alt="">
-                <p>{{ fixture.league }}</p>
-                <f7-link href="#"  class="like"><f7-icon class="is-gray" :class="{'is-gray': isLoading, 'is-purple': !isLoading }"  ion="heart" size="35px"></f7-icon></f7-link>
+                <p>{{ match.league }}</p>
+                <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
               </div>
               <f7-link class="bottom-b">
-                <f7-link class="link-head" @click="getHeadToHead(fixture._links.self.href)">
+                <f7-link class="link-head" @click="getHeadToHead(match._links.self.href)">
                 <div class="left-bot">
                   <div class="time-block">
-                    <span>{{ fixture.time }}</span>
+                    <span>{{ match.time }}</span>
                   </div>
                   <div class="team-block">
-                    <span>{{ fixture.homeTeam }}</span>
-                    <span>{{ fixture.awayTeam}}</span>
+                    <span>{{ match.homeTeam }}</span>
+                    <span>{{ match.awayTeam}}</span>
                   </div>
                 </div>
                 </f7-link>
                 <div class="right-bot">
                   <div class="point-block">
-                    <span>{{ fixture.homeGoals }}</span>
-                    <span>{{ fixture.awayGoals }}</span>
+                    <span>{{ match.homeGoals }}</span>
+                    <span>{{ match.awayGoals }}</span>
                   </div>
                   <f7-link href="/headtohead/" class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
                 </div>
@@ -70,26 +70,59 @@ import index from "vue";
 export default {
   data() {
     return {
-      isLoading: true,
-      fixtures: []
+      storage: window.localStorage,
+      matchs: [],
+      favour: []
     };
   },
+  
   mounted() {
+    if (this.storage.getItem("favour")) {
+      this.favour = JSON.parse(this.storage.getItem("favour"));
+    }
+    this.$f7.preloader.show();
     HTTP.get("getFixturesByDateInterval")
       .then(response => {
-        this.fixtures = response.data.match;
+        this.matchs = response.data.match;
+        let self = this;
+        this.matchs.forEach(function(item, i) {
+          let favoriteStatus = false;
+          self.favour.forEach(function(tip, i) {
+            if (item.id === tip.id) {
+              favoriteStatus = true;
+            }
+          });
+          item["favoriteStatus"] = favoriteStatus;
+          self.matchs.push(item);
+        });
+        this.$f7.preloader.hide();
       })
       .catch(function(error) {
-        this.fixtures = "Data is not avaliable";
+        this.matchs = "Data is not avaliable";
+        this.$f7.preloader.hide();
       });
   },
   methods: {
-    getHeadToHead(link) {
-      let id = link.match(/[0-9]\d+/);
-      this.$f7router.navigate("/headtohead/" + id, {
-        context: { caption: this.caption }
-      });
+    favourData(event) {
+      let self = this;
+      const value = JSON.parse(event.target.value);
+      if (event.target.checked) {
+        this.favour.push(value);
+      } else {
+        this.favour.forEach(function(item, i) {
+          if (item.id == value.id) {
+            self.favour.splice(i, 1);
+          }
+        });
+      }
+      this.storage.setItem("favour", JSON.stringify(this.favour));
     }
+    // getHeadToHead(link) {
+    //   let id = link.match(/[0-9]\d+/);
+    //   this.$f7router.navigate("/headtohead/" + id, {
+    //     context: { caption: this.caption }
+    //   });
+    // }
   }
 };
 </script>

@@ -7,7 +7,7 @@
       </div>
       <f7-nav-right>
         </f7-nav-right>
-    </f7-navbar> 
+        <f7-subnavbar>
     <f7-block class="search-block">
     <f7-searchbar
       placeholder="Search Results"
@@ -16,6 +16,8 @@
       search-in="p"
     ></f7-searchbar> 
     </f7-block>
+    </f7-subnavbar>
+    </f7-navbar> 
     <f7-list id="search-list" class="teams .bg-list">
       <f7-list-item  v-for="league in leagues" :key="league.id" class="team">
         <f7-link @click="getLeague(league.id ,league.name)" class="menu-link">
@@ -60,6 +62,9 @@ export default {
 };
 </script>
 <style>
+.md .subnavbar-inner{
+  padding: 0;
+}
 .md .searchbar-icon {
   background-image: url("../../../static/img/search.png");
   background-size: 20px 20px;
@@ -97,6 +102,7 @@ export default {
   );
   margin: 0px;
   padding: 10px 16px;
+  width: 100%;
 }
 .menu-page .search-block .searchbar {
   margin: 0px;
