@@ -13,15 +13,8 @@
       </f7-navbar>
       <f7-subnavbar class="toolbar-top">
         <f7-link class="ic-home"><f7-icon ion="android-home" size="40px"></f7-icon></f7-link>
-        <f7-toolbar tabbar class="tabbar-top">
-          <f7-link tab-link="#tabc1" tab-link-active>Dec <span>10</span></f7-link>
-          <f7-link tab-link="#tabc2">Dec <span>11</span></f7-link>
-          <f7-link tab-link="#tabc3">Dec <span>12</span></f7-link>
-          <f7-link tab-link="#tabc4">Dec <span>13</span></f7-link>
-          <f7-link tab-link="#tabc5">Dec <span>14</span></f7-link>
-          <f7-link tab-link="#tabc6">Dec <span>15</span></f7-link>
-          <f7-link tab-link="#tabc7">Dec <span>16</span></f7-link>
-          <f7-link tab-link="#tabc8">Dec <span>17</span></f7-link>
+        <f7-toolbar  tabbar class="tabbar-top">
+          <f7-link v-for="day in days" :key="day.id"  tab-link="#tabc1" tab-link-active>{{ day }}</f7-link>
         </f7-toolbar>
       </f7-subnavbar>
       <f7-tabs swipeable class="bg-tabs">
@@ -66,16 +59,27 @@
 </template>
 <script>
 import { HTTP } from "../../js/http";
-import index from "vue";
+import moment from "moment";
 export default {
   data() {
     return {
       storage: window.localStorage,
       matchs: [],
-      favour: []
+      favour: [],
+      days: []
     };
   },
-  
+
+  created() {
+   
+    for ( var i = -3; i<4; i++){
+      let dateStart = new Date();
+      let tempDate = moment(dateStart.setDate(dateStart.getDate() + i)).format("ddd, D");  
+      this.days.push(tempDate);
+      console.log(this.days);
+    }
+  },
+
   mounted() {
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
@@ -101,6 +105,21 @@ export default {
         this.matchs = "Data is not avaliable";
         this.$f7.preloader.hide();
       });
+    // get current date
+    // this.today = new Date();
+    // var dd = this.today.getDate();
+    // var mm = this.today.getMonth()+1; //January is 0!
+
+    // var yyyy = this.today.getFullYear();
+    // if(dd<10){
+    //     dd='0'+dd;
+    // }
+    // if(mm<10){
+    //     mm='0'+mm;
+    // }
+    // this.today = dd;
+    // console.log(today)
+    // get current date
   },
   methods: {
     favourData(event) {
@@ -127,6 +146,30 @@ export default {
 };
 </script>
 <style>
+.md .icon-checkbox {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  background: url("../../../static/img/heart.png") no-repeat;
+}
+.md .checkbox i {
+  border: none;
+  width: 30px;
+  height: 30px;
+}
+.md .checkbox i:after {
+  background: none;
+  width: 30px;
+  height: 30px;
+}
+.md .checkbox input[type="checkbox"]:checked ~ i {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  background: url("../../../static/img/heart_ok.png") no-repeat;
+}
 .md .teams .team .item-inner .bottom-b .time-block span {
   width: 50px;
   font-size: 11px;
