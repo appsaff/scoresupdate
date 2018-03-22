@@ -14,20 +14,20 @@
       <f7-subnavbar class="toolbar-top">
         <f7-link class="ic-home"><f7-icon ion="android-home" size="40px"></f7-icon></f7-link>
         <f7-toolbar  tabbar class="tabbar-top">
-          <f7-link v-for="day in days" :key="day.id"  tab-link="#tabc1" tab-link-active>{{ day }}</f7-link>
+          <f7-link v-for="(day, index) in days" :key="index" :tab-link="'#tabc' + index" :tab-link-active="day.status"><div>{{ day.dayName }}</div><div>{{ day.dayNumb }}</div></f7-link>
         </f7-toolbar>
       </f7-subnavbar>
       <f7-tabs swipeable class="bg-tabs">
-        <f7-tab id="tabc1" tab-active>
+        <f7-tab  v-for="(day, index) in days" :key="index" :id="'tabc' + index" >
           <f7-list class="teams">
-            <f7-list-item v-for="(match, index) in matchs" :key="index" class="team">
+            <f7-list-item v-for="(match, index) in getCurretMatch(day.dayNumb)" :key="index" class="team">
               <div class="top-b"> 
                 <img src="../../../static/img/flag.png" alt="">
                 <p>{{ match.league }}</p>
                 <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
               </div>
               <f7-link class="bottom-b">
-                <f7-link class="link-head" @click="getHeadToHead(match._links.self.href)">
+                <f7-link class="link-head" @click="getHeadToHead(index)">
                 <div class="left-bot">
                   <div class="time-block">
                     <span>{{ match.time }}</span>
@@ -47,12 +47,8 @@
                 </div>
               </f7-link>
             </f7-list-item>
-            <f7-list-item>
-              
-            </f7-list-item>
           </f7-list>
         </f7-tab>
-        <f7-tab id="tabc2">Tab 2 content...</f7-tab>
       </f7-tabs>
             
   </f7-page>
@@ -70,14 +66,25 @@ export default {
     };
   },
 
-  created() {
-   
-    for ( var i = -3; i<4; i++){
-      let dateStart = new Date();
-      let tempDate = moment(dateStart.setDate(dateStart.getDate() + i)).format("ddd, D");  
-      this.days.push(tempDate);
-      console.log(this.days);
+  created() {    
+    let dateStart = new Date();
+    let todayDate = dateStart.getDate();
+
+    for (var i = -3; i < 4; i++) {
+      let obj = {};
+      let dates = moment(dateStart.setDate(todayDate + i)).format(
+        "ddd, D"
+      );
+      let arr = dates.split(",");
+      obj.dayName = arr[0];
+      obj.dayNumb = arr[1].trim();
+      obj.status = false;
+
+      if (todayDate == obj.dayNumb) obj.status = true;
+
+      this.days.push(obj);
     }
+    console.log(this.days);
   },
 
   mounted() {
@@ -105,23 +112,16 @@ export default {
         this.matchs = "Data is not avaliable";
         this.$f7.preloader.hide();
       });
-    // get current date
-    // this.today = new Date();
-    // var dd = this.today.getDate();
-    // var mm = this.today.getMonth()+1; //January is 0!
-
-    // var yyyy = this.today.getFullYear();
-    // if(dd<10){
-    //     dd='0'+dd;
-    // }
-    // if(mm<10){
-    //     mm='0'+mm;
-    // }
-    // this.today = dd;
-    // console.log(today)
-    // get current date
   },
   methods: {
+    getCurretMatch(day) {
+      //console.log(day)
+      let self = this;
+      let sortedDay = self.matchs.filter(function(el) {
+        return el.date_parts[2] == day ? el : false;
+      });
+      return sortedDay;
+    },
     favourData(event) {
       let self = this;
       const value = JSON.parse(event.target.value);
@@ -135,13 +135,13 @@ export default {
         });
       }
       this.storage.setItem("favour", JSON.stringify(this.favour));
+    },
+    getHeadToHead(id) {
+      let match = this.matchs[id];
+      this.$f7router.navigate("/headtohead/" + id, {
+        context: { match: match }
+      });
     }
-    // getHeadToHead(link) {
-    //   let id = link.match(/[0-9]\d+/);
-    //   this.$f7router.navigate("/headtohead/" + id, {
-    //     context: { caption: this.caption }
-    //   });
-    // }
   }
 };
 </script>
