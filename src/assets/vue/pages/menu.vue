@@ -20,9 +20,9 @@
     </f7-navbar> 
     <f7-list id="search-list" class="teams .bg-list">
       <f7-list-item  v-for="league in leagues" :key="league.id" class="team">
-        <f7-link @click="getLeague(league.id ,league.name)" class="menu-link">
+        <f7-link @click="getLeague(league.id ,league.name, league.country)" class="menu-link">
         <div  class="top-b"> 
-          <img src="../../../static/img/flag.png" alt="">
+          <img :src='"static/img/flags/" + league.country + ".png"'>
           <span class="name-link" ><p>{{ league.name }}</p></span>
           <span class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></span>
         </div> 
@@ -52,17 +52,18 @@ export default {
         console.log(error);
         this.$f7.preloader.hide();
       });
-      
   },
   methods: {
-    getLeague(id, name) {
-      this.$f7router.navigate("/scoreitem/" + id, { context: { name: name } });
+    getLeague(id, name, countryName) {
+      this.$f7router.navigate("/scoreitem/" + id, {
+        context: { name: name, countryName: countryName }
+      });
     }
   }
 };
 </script>
 <style>
-.md .subnavbar-inner{
+.md .subnavbar-inner {
   padding: 0;
 }
 .md .searchbar-icon {

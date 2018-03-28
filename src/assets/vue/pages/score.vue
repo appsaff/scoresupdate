@@ -217,7 +217,7 @@ export default {
   padding-left: 10px;
 }
 .teams .team .item-inner .top-b img {
-  width: 70px;
+  min-width: 70px;
   height: 46px;
 }
 .md .link span + span {

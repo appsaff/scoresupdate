@@ -10,7 +10,7 @@
     </f7-navbar> 
     <f7-block  class="news-block .bg-list">
       <h2>{{ this.news.title }}</h2>
-      <span>{{ this.news.publishedAt }}</span>
+      <span>{{ publishDate(this.news.publishedAt) }}</span>
       <img :src="this.news.urlToImage" :alt="this.news.title">
       <div><p>{{ this.news.description }}</p></div>
     </f7-block>
@@ -22,6 +22,26 @@ export default {
   data() {
     return {
       news: this.$root.news
+    }
+  },
+  methods: {
+    publishDate(date) {
+      let tempDate = new Date(date);
+
+      var date = tempDate.getDate().toString();
+      var month = (tempDate.getMonth() + 1).toString();
+      var year = tempDate.getFullYear().toString();
+      var hour = tempDate.getUTCHours().toString();;
+      var minute = tempDate.getMinutes().toString();;
+
+      date = date[1] ? date : "0" + date[0];
+      month = month[1] ? month : "0" + month[0];
+      year = year[2] + year[3];
+      hour = hour[1] ? hour : "0" + hour[0];
+      minute = minute[1] ? minute : "0" + minute[0];
+      
+
+      return date + "." + month + "." + year + " " + "-" + " " + hour + ":" + minute;
     }
   }
 };

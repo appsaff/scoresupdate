@@ -18,8 +18,8 @@
     </f7-block>
     <f7-block class="team">
       <div class="top-b"> 
-          <img src="../../../static/img/flag.png" alt="">
-          <p>{{ name }}</p>
+          <img :src='"static/img/flags/" + context.countryName + ".png"'>
+          <p>{{ context.name }}</p>
           <f7-link href="#" class="like"></f7-link>
         </div> 
     </f7-block>
@@ -31,6 +31,7 @@
                 <div class="left-bot">
                   <div class="time-block">
                     <span>{{ match.time }}</span>
+                    <span>{{ publishDate(match.date) }}</span>
                   </div>
                   <div class="team-block">
                     <span class="fixName">{{ match.homeTeam }}</span>
@@ -58,19 +59,21 @@ export default {
     return {
       storage: window.localStorage,
       name: "",
+      context: {},
       matchs: [],
       favour: []
     };
   },
   mounted() {
-    // let leagueId = this.$f7route.params.id;
-    this.name = this.$f7route.context.name;
+    let leagueId = this.$f7route.params.id;
+    this.context = this.$f7route.context;
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
     }
     this.$f7.preloader.show();
-    HTTP.get("getFixturesByDateInterval")
+    HTTP.get("allFixtures_" + leagueId)
       .then(response => {
+        //if(response.data.match.league)
         this.matchs = response.data.match;
         let self = this;
         this.matchs.forEach(function(item, i) {
@@ -112,6 +115,19 @@ export default {
         });
       }
       this.storage.setItem("favour", JSON.stringify(this.favour));
+    },
+    publishDate(date) {
+      let tempDate = new Date(date);
+
+      var date = tempDate.getDate().toString();
+      var month = (tempDate.getMonth() + 1).toString();
+      var year = tempDate.getFullYear().toString();
+
+      date = date[1] ? date : "0" + date[0];
+      month = month[1] ? month : "0" + month[0];
+      year = year[2] + year[3];
+      
+      return date + "." + month + "." + year;
     }
   }
 };
@@ -218,6 +234,7 @@ export default {
 }
 .team .bottom-b {
   position: relative;
+  padding-bottom: 5px;
 }
 .team .top-b p {
   font-weight: 600;
@@ -237,6 +254,6 @@ export default {
   position: absolute;
   border-bottom: 1px solid #000;
   width: 100%;
-  bottom: -5px;
+  bottom: 0px;
 }
 </style>
