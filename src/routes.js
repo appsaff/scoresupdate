@@ -16,6 +16,10 @@ export default [
     component: require('./assets/vue/pages/menu.vue')
   },
   {
+    path: '/headtohead_score/:id',
+    component: require('./assets/vue/pages/headtohead_score.vue')
+  },
+  {
     path: '/headtohead/:id',
     component: require('./assets/vue/pages/headtohead.vue')
   },

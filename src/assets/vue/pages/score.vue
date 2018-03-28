@@ -27,7 +27,7 @@
                 <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
               </div>
               <f7-link class="bottom-b">
-                <f7-link class="link-head" @click="getHeadToHead(index)">
+                <f7-link class="link-head" @click="getHeadToHead(match.id)">
                 <div class="left-bot">
                   <div class="time-block">
                     <span>{{ match.time }}</span>
@@ -66,15 +66,13 @@ export default {
     };
   },
 
-  created() {    
+  created() {
     let dateStart = new Date();
     let todayDate = dateStart.getDate();
 
     for (var i = -3; i < 4; i++) {
       let obj = {};
-      let dates = moment(dateStart.setDate(todayDate + i)).format(
-        "ddd, D"
-      );
+      let dates = moment(dateStart.setDate(todayDate + i)).format("ddd, D");
       let arr = dates.split(",");
       obj.dayName = arr[0];
       obj.dayNumb = arr[1].trim();
@@ -84,7 +82,6 @@ export default {
 
       this.days.push(obj);
     }
-    console.log(this.days);
   },
 
   mounted() {
@@ -115,7 +112,6 @@ export default {
   },
   methods: {
     getCurretMatch(day) {
-      //console.log(day)
       let self = this;
       let sortedDay = self.matchs.filter(function(el) {
         return el.date_parts[2] == day ? el : false;
@@ -138,9 +134,7 @@ export default {
     },
     getHeadToHead(id) {
       let match = this.matchs[id];
-      this.$f7router.navigate("/headtohead/" + id, {
-        context: { match: match }
-      });
+      this.$f7router.navigate("/headtohead_score/" + id);
     }
   }
 };
