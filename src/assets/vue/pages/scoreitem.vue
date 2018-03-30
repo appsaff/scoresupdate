@@ -2,11 +2,11 @@
   <f7-page class="scoreit-page">
     <f7-navbar class="navbar-top" back-link="Back">
       <div class="titles">
-          <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
-          <f7-nav-title class="subtitle">Score</f7-nav-title>
+        <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
+        <f7-nav-title class="subtitle">Score</f7-nav-title>
       </div>
       <f7-nav-right>
-        </f7-nav-right>
+      </f7-nav-right>
     </f7-navbar> 
     <f7-block class="search-block">
     <f7-searchbar
@@ -18,42 +18,42 @@
     </f7-block>
     <f7-block class="team">
       <div class="top-b"> 
-          <img :src='"static/img/flags/" + context.countryName + ".png"'>
-          <p>{{ context.name }}</p>
-          <f7-link href="#" class="like"></f7-link>
-        </div> 
-    </f7-block>
-
+        <img :src='"static/img/flags/" + context.countryName + ".png"'>
+        <p>{{ context.name }}</p>
+        <f7-link href="#" class="like"></f7-link>
+      </div> 
+    </f7-block>  
     <f7-list id="search-listr" class="teams .bg-list">
-        <f7-list-item v-for="(match, index) in matchs" :key="index" class="team">
+      <f7-list-item v-for="(match, index) in matchs" :key="index" class="team">
         <div class="bottom-b">
-                <f7-link href="/headtohead/" class="link-head">
-                <div class="left-bot">
-                  <div class="time-block">
-                    <span>{{ match.time }}</span>
-                    <span>{{ publishDate(match.date) }}</span>
-                  </div>
-                  <div class="team-block">
-                    <span class="fixName">{{ match.homeTeam }}</span>
-                    <span class="fixName">{{ match.awayTeam }}</span>
-                  </div>
-                </div>
-                </f7-link>
-                <div class="right-bot">
-                  <div class="point-block">
-                    <span>{{ match.homeGoals }}</span>
-                    <span>{{ match.awayGoals }}</span>
-                  </div>
-                  <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
-                </div>
-              </div> 
-        </f7-list-item>
+          <f7-link href="/headtohead/" class="link-head">
+          <div class="left-bot">
+            <div class="time-block">
+              <span>{{ match.time }}</span>
+              <span>{{ publishDate(match.date) }}</span>
+            </div>
+            <div class="team-block">
+              <span class="fixName">{{ match.homeTeam }}</span>
+              <span class="fixName">{{ match.awayTeam }}</span>
+            </div>
+          </div>
+          </f7-link>
+          <div class="right-bot">
+            <div class="point-block">
+              <span>{{ match.homeGoals }}</span>
+              <span>{{ match.awayGoals }}</span>
+            </div>
+            <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
+          </div>
+        </div> 
+      </f7-list-item>
     </f7-list>
   </f7-page>
 </template>
 
 <script>
 import { HTTP } from "../../js/http";
+
 export default {
   data() {
     return {
@@ -66,18 +66,22 @@ export default {
   },
   mounted() {
     let leagueId = this.$f7route.params.id;
-    this.context = this.$f7route.context;
+
+    this.context = this.$f7route.context;    
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
     }
     this.$f7.preloader.show();
+
     HTTP.get("allFixtures_" + leagueId)
       .then(response => {
-        //if(response.data.match.league)
-        this.matchs = response.data.match;
         let self = this;
+
+        this.matchs = response.data.match;
+        
         this.matchs.forEach(function(item, i) {
           let favoriteStatus = false;
+
           self.favour.forEach(function(tip, i) {
             if (item.id === tip.id) {
               favoriteStatus = true;
@@ -91,17 +95,16 @@ export default {
       .catch(function(error) {
         this.matchs = "Error";
         this.$f7.preloader.hide();
-        // response.data.fixtures = "Data is not avaliable";
       });
   },
 
   methods: {
-    // getHeadToHead(link) {
-    //   let id = link.match(/[0-9]\d+/);
-    //   this.$f7router.navigate("/headtohead/" + id, {
-    //     context: { caption: this.caption }
-    //   });
-    // },
+    getHeadToHead(link) {
+      let id = link.match(/[0-9]\d+/);
+      this.$f7router.navigate("/headtohead/" + id, {
+        context: { caption: this.caption }
+      });
+    },
     favourData(event) {
       let self = this;
       const value = JSON.parse(event.target.value);
@@ -126,7 +129,7 @@ export default {
       date = date[1] ? date : "0" + date[0];
       month = month[1] ? month : "0" + month[0];
       year = year[2] + year[3];
-      
+
       return date + "." + month + "." + year;
     }
   }

@@ -18,7 +18,7 @@
         </f7-toolbar>
       </f7-subnavbar>
       <f7-tabs swipeable class="bg-tabs">
-        <f7-tab  v-for="(day, index) in days" :key="index" :id="'tabc' + index" >
+        <f7-tab v-for="(day, index) in days" :key="index" :id="'tabc' + index" :tab-active="day.status">
           <f7-list class="teams">
             <f7-list-item v-for="(match, index) in getCurretMatch(day.dayNumb)" :key="index" class="team">
               <div class="top-b"> 
@@ -27,35 +27,35 @@
                 <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
               </div>
               <f7-link class="bottom-b">
-                <f7-link class="link-head" @click="getHeadToHead(match.id)">
-                <div class="left-bot">
-                  <div class="time-block">
-                    <span>{{ match.time }}</span>
+                <f7-link class="link-head">
+                  <div class="left-bot">
+                    <div class="time-block">
+                      <span>{{ match.time }}</span>
+                    </div>
+                    <div class="team-block">
+                      <span>{{ match.homeTeam }}</span>
+                      <span>{{ match.awayTeam}}</span>
+                    </div>
                   </div>
-                  <div class="team-block">
-                    <span>{{ match.homeTeam }}</span>
-                    <span>{{ match.awayTeam}}</span>
-                  </div>
-                </div>
                 </f7-link>
                 <div class="right-bot">
                   <div class="point-block">
                     <span>{{ match.homeGoals }}</span>
                     <span>{{ match.awayGoals }}</span>
                   </div>
-                  <f7-link href="/headtohead/" class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
+                  <f7-link class="navigate" @click="getHeadToHead(match.id)"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
                 </div>
               </f7-link>
             </f7-list-item>
           </f7-list>
         </f7-tab>
-      </f7-tabs>
-            
+      </f7-tabs>            
   </f7-page>
 </template>
 <script>
 import { HTTP } from "../../js/http";
 import moment from "moment";
+
 export default {
   data() {
     return {
@@ -65,7 +65,6 @@ export default {
       days: []
     };
   },
-
   created() {
     let dateStart = new Date();
     let todayDate = dateStart.getDate();
@@ -83,7 +82,6 @@ export default {
       this.days.push(obj);
     }
   },
-
   mounted() {
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
@@ -113,14 +111,15 @@ export default {
   methods: {
     getCurretMatch(day) {
       let self = this;
-      let sortedDay = self.matchs.filter(function(el) {
+
+      return self.matchs.filter(function(el) {
         return el.date_parts[2] == day ? el : false;
       });
-      return sortedDay;
     },
     favourData(event) {
       let self = this;
       const value = JSON.parse(event.target.value);
+
       if (event.target.checked) {
         this.favour.push(value);
       } else {
@@ -133,12 +132,12 @@ export default {
       this.storage.setItem("favour", JSON.stringify(this.favour));
     },
     getHeadToHead(id) {
-      let match = this.matchs[id];
       this.$f7router.navigate("/headtohead_score/" + id);
     }
   }
 };
 </script>
+
 <style>
 .md .icon-checkbox {
   display: inline-block;

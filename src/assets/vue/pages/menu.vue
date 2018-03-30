@@ -2,20 +2,20 @@
   <f7-page class="menu-page">
     <f7-navbar class="navbar-top" back-link="Back">
       <div class="titles">
-          <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
-          <f7-nav-title class="subtitle">Menu</f7-nav-title>
+        <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
+        <f7-nav-title class="subtitle">Menu</f7-nav-title>
       </div>
       <f7-nav-right>
-        </f7-nav-right>
-        <f7-subnavbar>
-    <f7-block class="search-block">
-    <f7-searchbar
-      placeholder="Search Results"
-      search-container="#search-list"
-      search-item="li"
-      search-in="p"
-    ></f7-searchbar> 
-    </f7-block>
+      </f7-nav-right>
+    <f7-subnavbar>
+      <f7-block class="search-block">
+        <f7-searchbar
+          placeholder="Search Results"
+          search-container="#search-list"
+          search-item="li"
+          search-in="p"
+        ></f7-searchbar> 
+      </f7-block>
     </f7-subnavbar>
     </f7-navbar> 
     <f7-list id="search-list" class="teams .bg-list">
@@ -49,7 +49,6 @@ export default {
         this.$f7.preloader.hide();
       })
       .catch(function(error) {
-        console.log(error);
         this.$f7.preloader.hide();
       });
   },
@@ -120,7 +119,6 @@ export default {
   text-align: center;
   color: #fff;
 }
-
 .menu-page .search-block .searchbar input::placeholder {
   color: #fff;
 }

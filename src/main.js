@@ -32,10 +32,6 @@ import app from './main.vue'
 // Import Routes
 import routes from './routes.js'
 
-// Import Vuex Storage
-import store from './assets/vuex/storage.js'
-
-
 // Install Plugin
 Vue.use(Framework7Vue, Framework7);
 
@@ -51,8 +47,6 @@ export default new Vue({
   data: {
     news: [],
   },
-  
-  store,
   render: c => c('app'),
   components: {
     app,

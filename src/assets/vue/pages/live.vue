@@ -2,40 +2,40 @@
   <f7-page class="live-page">
     <f7-navbar class="navbar-top" back-link="Back">
       <div class="titles">
-          <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
-          <f7-nav-title class="subtitle">Live</f7-nav-title>
+        <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
+        <f7-nav-title class="subtitle">Live</f7-nav-title>
       </div>
       <f7-nav-right>
-        </f7-nav-right>
+      </f7-nav-right>
     </f7-navbar> 
     <f7-list class="teams .bg-list">
       <f7-list-item v-for="(match, index) in matchs" :key="match.id" class="team">
-              <div class="top-b"> 
-                <img src="../../../static/img/flag.png" alt="">
-                <p>{{ match.league }}</p>
-                <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
-              </div>
-              <f7-link class="bottom-b">
-                <f7-link class="link-head" @click="getHeadToHead(index)">
-                <div class="left-bot">
-                  <div class="time-block">
-                    <span>{{ match.time }}</span>
-                  </div>
-                  <div class="team-block">
-                    <span>{{ match.homeTeam }}</span>
-                    <span>{{ match.awayTeam}}</span>
-                  </div>
-                </div>
-                </f7-link>
-                <div class="right-bot">
-                  <div class="point-block">
-                    <span>{{ match.homeGoals }}</span>
-                    <span>{{ match.awayGoals }}</span>
-                  </div>
-                  <f7-link  class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
-                </div>
-              </f7-link>
-            </f7-list-item>
+        <div class="top-b"> 
+          <img src="../../../static/img/flag.png" alt="">
+          <p>{{ match.league }}</p>
+          <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
+        </div>
+        <f7-link class="bottom-b">
+          <f7-link class="link-head" @click="getHeadToHead(index)">
+          <div class="left-bot">
+            <div class="time-block">
+              <span>{{ match.time }}</span>
+            </div>
+            <div class="team-block">
+              <span>{{ match.homeTeam }}</span>
+              <span>{{ match.awayTeam}}</span>
+            </div>
+          </div>
+          </f7-link>
+          <div class="right-bot">
+            <div class="point-block">
+              <span>{{ match.homeGoals }}</span>
+              <span>{{ match.awayGoals }}</span>
+            </div>
+            <f7-link  class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
+          </div>
+        </f7-link>
+      </f7-list-item>
     </f7-list>
   </f7-page>
 </template>
