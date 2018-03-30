@@ -75,7 +75,7 @@ export default {
       let dates = moment(dateStart.setDate(todayDate + i)).format("ddd, D");
       let arr = dates.split(",");
       obj.dayName = arr[0];
-      obj.dayNumb = arr[1].trim();
+      (arr[1].trim().length == 1) ? obj.dayNumb = "0" + arr[1].trim() : obj.dayNumb = arr[1].trim();
       obj.status = false;
 
       if (todayDate == obj.dayNumb) obj.status = true;
@@ -265,5 +265,8 @@ export default {
 .md .navigate .icon {
   color: #6d2b8c;
   margin-right: 10px;
+}
+.md .tabs-swipeable-wrap > .tabs > .tab{
+  overflow: auto;
 }
 </style>

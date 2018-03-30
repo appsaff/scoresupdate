@@ -62,9 +62,10 @@ export default {
   methods:{ 
     vibr(){
       let localSetting = JSON.parse(this.storage.getItem("settings"));
-      if(localSetting.vibration == true){
+      if(localSetting){
       let time = 3000;
       navigator.vibrate(time);
+      console.log(1)
       }
     }
   }

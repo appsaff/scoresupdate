@@ -41,28 +41,28 @@
                 <f7-list-item-cell class="inf-team">{{ matchs.awayTeam }}</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
-                <f7-list-item-cell class="inf-title">Goals</f7-list-item-cell>
+                <f7-list-item-cell v-if="matchs.homeGoalDetails || matchs.awayGoalDetails" class="inf-title">Goals</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
                 <f7-list-item-cell>{{ matchs.homeGoalDetails }}</f7-list-item-cell>
                 <f7-list-item-cell>{{ matchs.awayGoalDetails }}</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
-                <f7-list-item-cell class="inf-title">Team Formation</f7-list-item-cell>
+                <f7-list-item-cell v-if="matchs.homeTeamFormation || matchs.awayTeamFormation" class="inf-title">Team Formation</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
                 <f7-list-item-cell>{{ matchs.homeTeamFormation }}</f7-list-item-cell>
                 <f7-list-item-cell>{{ matchs.awayTeamFormation }}</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
-                <f7-list-item-cell class="inf-title">Yellow Cards</f7-list-item-cell>
+                <f7-list-item-cell v-if="matchs.homeTeamYellowCardDetails || matchs.awayTeamYellowCardDetails" class="inf-title">Yellow Cards</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
                 <f7-list-item-cell>{{ matchs.homeTeamYellowCardDetails }}</f7-list-item-cell>
                 <f7-list-item-cell>{{ matchs.awayTeamYellowCardDetails }}</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
-                <f7-list-item-cell class="inf-title">Stadium</f7-list-item-cell>
+                <f7-list-item-cell v-if="matchs.stadium" class="inf-title">Stadium</f7-list-item-cell>
               </f7-list-item-row>
               <f7-list-item-row>
                 <f7-list-item-cell>{{ matchs.stadium }}</f7-list-item-cell>
