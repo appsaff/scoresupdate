@@ -182,22 +182,20 @@ export default {
       .then(response => {
         let data = response.data.match;
         data.forEach(item => {
-          console.log(item);
-          // if (item.id == matchId) {
-            
-          // }
-          //  ? (this.match = item) : (this.match = []);
+          if (item.id == matchId) {
+            this.match = item;
+          }
         });
         this.$f7.preloader.hide();
       })
       .catch(function(error) {
-        this.matchs = "Error";
         this.$f7.preloader.hide();
       });
   },
   methods: {
     devideElem(elem) {
       let data = [];
+
       if (elem) {
         data = elem.split(";");
         data.forEach(element => {

@@ -70,13 +70,14 @@ export default {
     let todayDate = dateStart.getDate();
 
     for (var i = -3; i < 4; i++) {
-      let obj = {};
-      let dates = moment(dateStart.setDate(todayDate + i)).format("ddd, D");
+      let obj = {};      
+      let dates = moment().date(todayDate + i).format("ddd, D");
       let arr = dates.split(",");
+
       obj.dayName = arr[0];
       (arr[1].trim().length == 1) ? obj.dayNumb = "0" + arr[1].trim() : obj.dayNumb = arr[1].trim();
       obj.status = false;
-
+      
       if (todayDate == obj.dayNumb) obj.status = true;
 
       this.days.push(obj);
@@ -89,10 +90,13 @@ export default {
     this.$f7.preloader.show();
     HTTP.get("getFixturesByDateInterval")
       .then(response => {
-        this.matchs = response.data.match;
         let self = this;
+
+        this.matchs = response.data.match;
+        
         this.matchs.forEach(function(item, i) {
           let favoriteStatus = false;
+
           self.favour.forEach(function(tip, i) {
             if (item.id === tip.id) {
               favoriteStatus = true;
@@ -104,15 +108,13 @@ export default {
         this.$f7.preloader.hide();
       })
       .catch(function(error) {
-        this.matchs = "Data is not avaliable";
+        this.matchs = [];
         this.$f7.preloader.hide();
       });
   },
   methods: {
     getCurretMatch(day) {
-      let self = this;
-
-      return self.matchs.filter(function(el) {
+      return this.matchs.filter(function(el) {
         return el.date_parts[2] == day ? el : false;
       });
     },
