@@ -11,12 +11,11 @@
     <f7-list class="teams .bg-list">
       <f7-list-item v-for="(match, index) in matchs" :key="match.id" class="team">
         <div class="top-b"> 
-          <img src="../../../static/img/flag.png" alt="">
           <p>{{ match.league }}</p>
           <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
         </div>
         <f7-link class="bottom-b">
-          <f7-link class="link-head" @click="getHeadToHead(index)">
+          <f7-link class="link-head">
           <div class="left-bot">
             <div class="time-block">
               <span>{{ match.time }}</span>
@@ -32,7 +31,7 @@
               <span>{{ match.homeGoals }}</span>
               <span>{{ match.awayGoals }}</span>
             </div>
-            <f7-link  class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
+            <f7-link @click="getHeadToHead(index)" class="navigate"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
           </div>
         </f7-link>
       </f7-list-item>

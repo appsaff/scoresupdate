@@ -12,7 +12,6 @@
     <f7-block class="head-live">
       <div class="head-live-left"> 
         <div class="time-block">
-          <img src="../../../static/img/flag.png" alt="">
           <span>{{ match.time }}</span>
         </div>
         <div class="name-block">
@@ -60,6 +59,13 @@
             <f7-list-item-row>
               <f7-list-item-cell>{{ match.homeTeamYellowCardDetails }}</f7-list-item-cell>
               <f7-list-item-cell>{{ match.awayTeamYellowCardDetails }}</f7-list-item-cell>
+            </f7-list-item-row>
+            <f7-list-item-row>
+              <f7-list-item-cell v-if="match.homeTeamRedCardDetails || match.awayTeamRedCardDetails" class="inf-title">Red Cards</f7-list-item-cell>
+            </f7-list-item-row>
+            <f7-list-item-row>
+              <f7-list-item-cell>{{ match.homeTeamRedCardDetails }}</f7-list-item-cell>
+              <f7-list-item-cell>{{ match.awayTeamRedCardDetails }}</f7-list-item-cell>
             </f7-list-item-row>
             <f7-list-item-row>
               <f7-list-item-cell v-if="match.stadium" class="inf-title">Stadium</f7-list-item-cell>

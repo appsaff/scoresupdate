@@ -62,7 +62,7 @@ export default {
 };
 </script>
 <style>
-.md .subnavbar-inner {
+.md .menu-page .subnavbar-inner {
   padding: 0;
 }
 .md .searchbar-icon {

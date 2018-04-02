@@ -1,7 +1,4 @@
 /* Your app styles here */
-.md .subnavbar-inner > a.link:first-child {
-    margin-left: 0px;
-}
 .md .navbar-top{
     background: linear-gradient(to right, rgba(105,41,135,1) 0%, rgba(202,116,213,1) 100%);
 }

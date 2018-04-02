@@ -67,7 +67,7 @@ export default {
   mounted() {
     let leagueId = this.$f7route.params.id;
 
-    this.context = this.$f7route.context;    
+    this.context = this.$f7route.context;
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
     }
@@ -77,9 +77,7 @@ export default {
       .then(response => {
         let self = this;
 
-        this.matchs = response.data.match;
-        
-        this.matchs.forEach(function(item, i) {
+        response.data.match.forEach(function(item, i) {
           let favoriteStatus = false;
 
           self.favour.forEach(function(tip, i) {
@@ -90,6 +88,7 @@ export default {
           item["favoriteStatus"] = favoriteStatus;
           self.matchs.push(item);
         });
+        console.log(this.matchs);
         this.$f7.preloader.hide();
       })
       .catch(function(error) {

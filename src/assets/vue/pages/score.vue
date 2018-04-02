@@ -22,7 +22,6 @@
           <f7-list class="teams">
             <f7-list-item v-for="(match, index) in getCurretMatch(day.dayNumb)" :key="index" class="team">
               <div class="top-b"> 
-                <img src="../../../static/img/flag.png" alt="">
                 <p>{{ match.league }}</p>
                 <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
               </div>
@@ -31,6 +30,7 @@
                   <div class="left-bot">
                     <div class="time-block">
                       <span>{{ match.time }}</span>
+                      <span>{{ publishDate(match.date) }}</span>
                     </div>
                     <div class="team-block">
                       <span>{{ match.homeTeam }}</span>
@@ -135,6 +135,19 @@ export default {
     },
     getHeadToHead(id) {
       this.$f7router.navigate("/headtohead_score/" + id);
+    },
+    publishDate(date) {
+      let tempDate = new Date(date);
+
+      var date = tempDate.getDate().toString();
+      var month = (tempDate.getMonth() + 1).toString();
+      var year = tempDate.getFullYear().toString();
+
+      date = date[1] ? date : "0" + date[0];
+      month = month[1] ? month : "0" + month[0];
+      year = year[2] + year[3];
+
+      return date + "." + month + "." + year;
     }
   }
 };
@@ -205,6 +218,7 @@ export default {
   font-weight: 600;
   font-size: 12px;
   color: #000;
+  padding-left: 15px;
 }
 .teams .team .item-inner .top-b .name-link {
   width: 100%;
