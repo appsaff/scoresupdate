@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import { HTTP } from "../../js/http";
+import { getDataLive } from "../../js/function";
+import { setInterval } from 'timers';
 export default {
   data() {
     return {
@@ -50,26 +51,34 @@ export default {
     };
   },
   mounted() {
+    let settings = JSON.parse(this.storage.getItem("settings"));
+
+    this.getLive();
+
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
     }
-    this.$f7.preloader.show();
-    HTTP.get("getLiveScore")
-      .then(response => {
-        let data = response.data.match;
-        if (data.length > 1) {
-          this.matchs = data;
-        } else {
-          this.matchs = [data];
-        }
-        this.$f7.preloader.hide();
-      })
-      .catch(function(error) {
-        this.matchs = "Error";
-        this.$f7.preloader.hide();
-      });
+
+    if (settings && settings.autorefresh){
+      setInterval(()=>{
+        this.getLive();
+      }, 300000);
+    }
   },
   methods: {
+    getLive() {
+      this.$f7.preloader.show();
+      getDataLive()
+        .then(result => {
+          this.matchs = result;
+          this.storage.setItem("live", JSON.stringify(this.matchs));
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.$f7.dialog.alert(error, "Error");
+          this.matchs = JSON.parse(this.storage.getItem("live"));
+        });
+    },
     getHeadToHead(id) {
       let match = this.matchs[id];
       this.$f7router.navigate("/headtohead/" + id, {
@@ -77,12 +86,11 @@ export default {
       });
     },
     favourData(event) {
-      let self = this;
       const value = JSON.parse(event.target.value);
       if (event.target.checked) {
         this.favour.push(value);
       } else {
-        this.favour.forEach(function(item, i) {
+        this.favour.forEach((item, i) => {
           if (item.id == value.id) {
             self.favour.splice(i, 1);
           }

@@ -33,7 +33,8 @@
 </template>
 
 <script>
-import { HTTP } from "../../js/http";
+import { getDataLeague, checkIfUpdate } from "../../js/function";
+import { error } from "util";
 export default {
   data() {
     return {
@@ -42,15 +43,26 @@ export default {
     };
   },
   mounted() {
+    let lastUpdateLeagues = this.storage.getItem("lastUpdateLeagues");
+
     this.$f7.preloader.show();
-    HTTP.get("getAllLeagues")
-      .then(response => {
-        this.leagues = response.data.league;
-        this.$f7.preloader.hide();
-      })
-      .catch(function(error) {
-        this.$f7.preloader.hide();
-      });
+
+    if (checkIfUpdate(lastUpdateLeagues)) {
+      getDataLeague()
+        .then(result => {
+          this.leagues = result;
+          this.storage.setItem("leagues", JSON.stringify(this.leagues));
+          this.storage.setItem("lastUpdateLeagues", new Date());
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.leagues = JSON.parse(this.storage.getItem("leagues"));
+          this.$f7.dialog.alert(error, "Error");
+        });
+    } else {
+      this.leagues = JSON.parse(this.storage.getItem("leagues"));
+      this.$f7.preloader.hide();
+    }
   },
   methods: {
     getLeague(id, name, countryName) {

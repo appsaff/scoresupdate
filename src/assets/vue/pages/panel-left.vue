@@ -3,10 +3,10 @@
     <f7-block-title>SETTINGS</f7-block-title>
     <f7-list>
       <f7-list-item title="Automatic refresh"><f7-toggle id="autorefresh" @change="autorefresh" :checked="settings.autorefresh" color="black"></f7-toggle></f7-list-item>
-      <f7-list-item title="Vibration"><f7-toggle id="vibration" @change="vibration" :checked="settings.vibration" color="black"></f7-toggle></f7-list-item>
+      <!-- <f7-list-item title="Vibration"><f7-toggle id="vibration" @change="vibration" :checked="settings.vibration" color="black"></f7-toggle></f7-list-item> -->
     </f7-list>
-    <f7-button round-md>Clear cache</f7-button>
-    <f7-button round-md>Refresh</f7-button>
+    <f7-button @click="clearCache()" round-md>Clear cache</f7-button>
+    <f7-button @click="updateData()" round-md>Refresh</f7-button>
     <f7-block-title>INFO</f7-block-title>
     <f7-block>
       <p>Version 1.0.0-beta</p>
@@ -14,6 +14,7 @@
   </f7-page>
 </template>
 <script>
+import { getDataLeague, getDataMatch, getDataArticle } from "../../js/function";
 export default {
   data() {
     return {
@@ -32,10 +33,46 @@ export default {
     vibration: function() {
       this.settings.vibration = !this.settings.vibration;
       this.storage.setItem("settings", JSON.stringify(this.settings));
+    },
+    updateData() {
+      getDataLeague()
+        .then(result => {
+          this.leagues = result;
+          this.storage.setItem("leagues", JSON.stringify(this.leagues));
+          this.storage.setItem("lastUpdateLeagues", new Date());
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.$f7.dialog.alert(error, "Error");
+        });
+      getDataMatch()
+        .then(result => {
+          this.matchs = result;
+          this.storage.setItem("matchs", JSON.stringify(this.matchs));
+          this.storage.setItem("lastUpdateMatchs", new Date());
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.$f7.dialog.alert(error, "Error");
+        });
+      getDataArticle()
+        .then(result => {
+          this.articles = result;
+          this.storage.setItem("articles", JSON.stringify(this.articles));
+          this.storage.setItem("lastUpdateArticles", new Date());
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.$f7.dialog.alert(error, "Error");
+        });
+    },
+    clearCache() {
+      this.storage.clear();
     }
   },
   mounted() {
     let localSetting = JSON.parse(this.storage.getItem("settings"));
+
     if (localSetting) {
       this.settings = localSetting;
     }

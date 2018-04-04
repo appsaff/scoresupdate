@@ -53,6 +53,7 @@
   </f7-page>
 </template>
 <script>
+import { getDataMatch, checkIfUpdate } from "../../js/function";
 import { HTTP } from "../../js/http";
 import moment from "moment";
 
@@ -70,47 +71,60 @@ export default {
     let todayDate = dateStart.getDate();
 
     for (var i = -3; i < 4; i++) {
-      let obj = {};      
-      let dates = moment().date(todayDate + i).format("ddd, D");
+      let obj = {};
+      let dates = moment()
+        .date(todayDate + i)
+        .format("ddd, D");
       let arr = dates.split(",");
 
       obj.dayName = arr[0];
-      (arr[1].trim().length == 1) ? obj.dayNumb = "0" + arr[1].trim() : obj.dayNumb = arr[1].trim();
+      arr[1].trim().length == 1
+        ? (obj.dayNumb = "0" + arr[1].trim())
+        : (obj.dayNumb = arr[1].trim());
       obj.status = false;
-      
+
       if (todayDate == obj.dayNumb) obj.status = true;
 
       this.days.push(obj);
     }
   },
   mounted() {
+    let lastUpdateMatchs = this.storage.getItem("lastUpdateMatchs");
+
+    this.$f7.preloader.show();
+
     if (this.storage.getItem("favour")) {
       this.favour = JSON.parse(this.storage.getItem("favour"));
     }
-    this.$f7.preloader.show();
-    HTTP.get("getFixturesByDateInterval")
-      .then(response => {
-        let self = this;
-
-        this.matchs = response.data.match;
-        
-        this.matchs.forEach(function(item, i) {
-          let favoriteStatus = false;
-
-          self.favour.forEach(function(tip, i) {
-            if (item.id === tip.id) {
-              favoriteStatus = true;
-            }
-          });
-          item["favoriteStatus"] = favoriteStatus;
-          self.matchs.push(item);
+    if (checkIfUpdate(lastUpdateMatchs)) {
+      getDataMatch()
+        .then(result => {
+          this.matchs = result;
+          this.storage.setItem("matchs", JSON.stringify(this.matchs));
+          this.storage.setItem("lastUpdateMatchs", new Date());
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.matchs = JSON.parse(this.storage.getItem("matchs"));
+          this.$f7.dialog.alert(error, "Error");
         });
-        this.$f7.preloader.hide();
-      })
-      .catch(function(error) {
-        this.matchs = [];
-        this.$f7.preloader.hide();
+    } else {
+      this.matchs = JSON.parse(this.storage.getItem("matchs"));
+      this.$f7.preloader.hide();
+    }
+
+    this.matchs.forEach((item, i) => {
+      let favoriteStatus = false;
+
+      this.favour.forEach((tip, i) => {
+        if (item.id === tip.id) {
+          favoriteStatus = true;
+        }
       });
+      item["favoriteStatus"] = favoriteStatus;
+      this.matchs.push(item);
+    });
+
   },
   methods: {
     getCurretMatch(day) {
@@ -119,15 +133,14 @@ export default {
       });
     },
     favourData(event) {
-      let self = this;
       const value = JSON.parse(event.target.value);
 
       if (event.target.checked) {
         this.favour.push(value);
       } else {
-        this.favour.forEach(function(item, i) {
+        this.favour.forEach((item, i) => {
           if (item.id == value.id) {
-            self.favour.splice(i, 1);
+            this.favour.splice(i, 1);
           }
         });
       }
@@ -136,12 +149,11 @@ export default {
     getHeadToHead(id) {
       this.$f7router.navigate("/headtohead_score/" + id);
     },
-    publishDate(date) {
-      let tempDate = new Date(date);
-
-      var date = tempDate.getDate().toString();
-      var month = (tempDate.getMonth() + 1).toString();
-      var year = tempDate.getFullYear().toString();
+    publishDate(value) {
+      let tempDate = new Date(value);
+      let date = tempDate.getDate().toString();
+      let month = (tempDate.getMonth() + 1).toString();
+      let year = tempDate.getFullYear().toString();
 
       date = date[1] ? date : "0" + date[0];
       month = month[1] ? month : "0" + month[0];
@@ -281,7 +293,7 @@ export default {
   color: #6d2b8c;
   margin-right: 10px;
 }
-.md .tabs-swipeable-wrap > .tabs > .tab{
+.md .tabs-swipeable-wrap > .tabs > .tab {
   overflow: auto;
 }
 </style>

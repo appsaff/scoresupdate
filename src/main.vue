@@ -52,8 +52,7 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import { HTTP } from "assets/js/http";
 export default {
   data() {
     return {
@@ -61,7 +60,7 @@ export default {
         name: "",
         email: "",
         phone: ""
-      }
+      },
     };
   },
   methods: {
@@ -73,8 +72,7 @@ export default {
       formData.append("email", this.fields.email);
       formData.append("phone", this.fields.phone);
 
-      axios
-        .post("http://canappsdb.com/inc/mail.php", formData, {
+        HTTP.post("http://canappsdb.com/inc/mail.php", formData, {
           crossdomain: true
         })
         .then(response => {
@@ -88,8 +86,17 @@ export default {
     },
     popupclose() {
       this.$f7.popup.close();
-    }
+    },
+   
   },
+  // computed: {
+  //   checkFunc(){
+  //     let self = this
+  //     if (this.storage.length <= 0){
+  //       getData();
+  //     }
+  //   }
+  // },
   mounted() {
     VMasker(document.getElementById("phone")).maskPattern("+9 (999) 999-99-99");
   }

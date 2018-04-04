@@ -26,7 +26,7 @@
     <f7-list id="search-listr" class="teams .bg-list">
       <f7-list-item v-for="(match, index) in matchs" :key="index" class="team">
         <div class="bottom-b">
-          <f7-link href="/headtohead/" class="link-head">
+          <f7-link  @click="getHeadToHead(index)" class="link-head">
           <div class="left-bot">
             <div class="time-block">
               <span>{{ match.time }}</span>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { HTTP } from "../../js/http";
+import { getAllFixtures, checkIfUpdate } from "../../js/function";
 
 export default {
   data() {
@@ -66,47 +66,48 @@ export default {
   },
   mounted() {
     let leagueId = this.$f7route.params.id;
+    let lastUpdate = this.storage.getItem("lastUpdateallFixtures_" + leagueId);
 
     this.context = this.$f7route.context;
-    if (this.storage.getItem("favour")) {
-      this.favour = JSON.parse(this.storage.getItem("favour"));
-    }
+
     this.$f7.preloader.show();
 
-    HTTP.get("allFixtures_" + leagueId)
-      .then(response => {
-        let self = this;
-
-        response.data.match.forEach(function(item, i) {
-          let favoriteStatus = false;
-
-          self.favour.forEach(function(tip, i) {
-            if (item.id === tip.id) {
-              favoriteStatus = true;
-            }
-          });
-          item["favoriteStatus"] = favoriteStatus;
-          self.matchs.push(item);
+    if (checkIfUpdate(lastUpdate)) {
+      getAllFixtures(leagueId)
+        .then(result => {
+          this.matchs = result;
+          this.storage.setItem(
+            "allFixtures_" + leagueId,
+            JSON.stringify(this.matchs)
+          );
+          this.storage.setItem("lastUpdateallFixtures_" + leagueId, new Date());
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.matchs = JSON.parse(
+            this.storage.getItem("allFixtures_" + leagueId)
+          );
+          this.$f7.dialog.alert(error, "Error");
         });
-        console.log(this.matchs);
-        this.$f7.preloader.hide();
-      })
-      .catch(function(error) {
-        this.matchs = "Error";
-        this.$f7.preloader.hide();
-      });
+    } else {
+      this.matchs = JSON.parse(this.storage.getItem("allFixtures_" + leagueId));
+      this.$f7.preloader.hide();
+    }
   },
 
   methods: {
-    getHeadToHead(link) {
-      let id = link.match(/[0-9]\d+/);
+    getHeadToHead(id) {
+      let match = this.matchs[id];
+
       this.$f7router.navigate("/headtohead/" + id, {
-        context: { caption: this.caption }
+        context: { match: match }
       });
     },
     favourData(event) {
       let self = this;
+
       const value = JSON.parse(event.target.value);
+
       if (event.target.checked) {
         this.favour.push(value);
       } else {
@@ -116,14 +117,14 @@ export default {
           }
         });
       }
+
       this.storage.setItem("favour", JSON.stringify(this.favour));
     },
-    publishDate(date) {
-      let tempDate = new Date(date);
-
-      var date = tempDate.getDate().toString();
-      var month = (tempDate.getMonth() + 1).toString();
-      var year = tempDate.getFullYear().toString();
+    publishDate(value) {
+      let tempDate = new Date(value);
+      let date = tempDate.getDate().toString();
+      let month = (tempDate.getMonth() + 1).toString();
+      let year = tempDate.getFullYear().toString();
 
       date = date[1] ? date : "0" + date[0];
       month = month[1] ? month : "0" + month[0];

@@ -24,149 +24,58 @@
         {{ showDate(matchs.date) }}
       </div> 
     </f7-block>
-    <div class="container">
-    <f7-toolbar tabbar class="tabbar-head">
-          <f7-link tab-link="#tabh1" tab-link-active><span><f7-icon ion="ios-bookmarks" size="30px"></f7-icon></span>Info</f7-link>
-          <f7-link tab-link="#tabh2"><span><f7-icon ion="android-contacts" size="30px"></f7-icon></span>H2H</f7-link>
-    </f7-toolbar>
-    </div>
-    <f7-tabs swipeable class="bg-tabs">
-      <f7-tab id="tabh1" tab-active>
-        <f7-list class="inf-list">
-          <f7-list-item>
-            <f7-list-item-cell>
-              <f7-list-item-row>
-              <f7-list-item-cell class="inf-team">{{ matchs.homeTeam }}</f7-list-item-cell>
-              <f7-list-item-cell class="inf-team">{{ matchs.awayTeam }}</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell v-if="matchs.homeGoalDetails || matchs.awayGoalDetails" class="inf-title">Goals</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell>{{ matchs.homeGoalDetails }}</f7-list-item-cell>
-              <f7-list-item-cell>{{ matchs.awayGoalDetails }}</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell v-if="matchs.homeTeamFormation || matchs.awayTeamFormation" class="inf-title">Team Formation</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell>{{ matchs.homeTeamFormation }}</f7-list-item-cell>
-              <f7-list-item-cell>{{ matchs.awayTeamFormation }}</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell v-if="matchs.homeTeamYellowCardDetails || matchs.awayTeamYellowCardDetails" class="inf-title">Yellow Cards</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell>{{ matchs.homeTeamYellowCardDetails }}</f7-list-item-cell>
-              <f7-list-item-cell>{{ matchs.awayTeamYellowCardDetails }}</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell v-if="matchs.homeTeamRedCardDetails || matchs.awayTeamRedCardDetails" class="inf-title">Red Cards</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell>{{ matchs.homeTeamRedCardDetails }}</f7-list-item-cell>
-              <f7-list-item-cell>{{ matchs.awayTeamRedCardDetails }}</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell v-if="matchs.stadium" class="inf-title">Stadium</f7-list-item-cell>
-            </f7-list-item-row>
-            <f7-list-item-row>
-              <f7-list-item-cell>{{ matchs.stadium }}</f7-list-item-cell>
-            </f7-list-item-row>
-            </f7-list-item-cell>
-          </f7-list-item>
-          <f7-list-item></f7-list-item>
-        </f7-list>
-      </f7-tab>
-      <f7-tab id="tabh2">
-        <!-- <f7-toolbar  tabbar class="tabbar-head-second">
-            <f7-link tab-link="#tabhh1" tab-link-active><span></span>{{ fixture.homeTeamName }}</f7-link>
-            <f7-link tab-link="#tabhh2">HEAD TO HEAD</f7-link>
-            <f7-link tab-link="#tabhh3">{{ fixture.awayTeamName }}</f7-link>
-        </f7-toolbar>
-        <f7-tabs swipeable class="bg-tabs">
-          <f7-tab id="tabhh1" tab-active>
-            <f7-list  class="teams .bg-list">
-                <f7-list-item v-for="(home, key) in homeTeamsGames.fixtures" :key="key" class="team"> 
-                <div class="bottom-b">
-                        <div class="left-bot">
-                          <div class="time-block">
-                            <span>{{ home.status }}</span>
-                            <span class="head-date">{{ showDate(home.date) }}</span>
-                          </div>
-                          <div class="team-block"> 
-                            <span>{{ home.homeTeamName }}</span>
-                            <span>{{ home.awayTeamName }}</span>
-                          </div>
-                        </div>
-                        <div class="right-bot">
-                          <div class="point-block">
-                            <span>{{ home.result.goalsHomeTeam }}</span>
-                            <span>{{ home.result.goalsAwayTeam }}</span>
-                          </div>
-                        </div>
-                      </div> 
-                </f7-list-item>
-            </f7-list>
-          </f7-tab> 
-          <f7-tab id="tabhh2">
-            <f7-block class="team">
-              <div class="top-b"> 
-                  <img src="../../../static/img/flag.png" alt="">
-                  <p>{{ caption }}</p>
-                  <f7-link href="" class="like"></f7-link>
-                </div> 
-            </f7-block>
-            <f7-list  class="teams .bg-list">
-                <f7-list-item v-for="(head2, key) in head2head.fixtures" :key="key" class="team"> 
-                <div class="bottom-b">
-                        <div class="left-bot">
-                          <div class="time-block">
-                            <span>{{ head2.status }}</span>
-                            <span class="head-date">{{ showDate(head2.date) }}</span>
-                          </div>
-                          <div class="team-block"> 
-                            <span>{{ head2.homeTeamName }}</span>
-                            <span>{{ head2.awayTeamName }}</span>
-                          </div>
-                        </div>
-                        <div class="right-bot">
-                          <div class="point-block">
-                            <span>{{ head2.result.goalsHomeTeam }}</span>
-                            <span>{{ head2.result.goalsAwayTeam }}</span>
-                          </div>
-                        </div>
-                      </div> 
-                </f7-list-item>
-            </f7-list>        
-          </f7-tab>
-          <f7-tab id="tabhh3">
-            <f7-list  class="teams .bg-list">
-                <f7-list-item v-for="(away, key) in awayTeamsGames.fixtures" :key="key" class="team"> 
-                <div class="bottom-b">
-                        <div class="left-bot">
-                          <div class="time-block">
-                            <span>{{ away.status }}</span>
-                            <span class="head-date">{{ showDate(away.date) }}</span>
-                          </div>
-                          <div class="team-block"> 
-                            <span>{{ away.homeTeamName }}</span>
-                            <span>{{ away.awayTeamName }}</span>
-                          </div>
-                        </div>
-                        <div class="right-bot">
-                          <div class="point-block">
-                            <span>{{ away.result.goalsHomeTeam }}</span>
-                            <span>{{ away.result.goalsAwayTeam }}</span>
-                          </div>
-                        </div>
-                      </div> 
-                </f7-list-item>
-            </f7-list>
-          </f7-tab>
-        </f7-tabs>  -->
-      </f7-tab>
-    </f7-tabs>
+    <f7-list class="inf-list">
+      <f7-list-item>
+        <f7-list-item-cell>
+          <f7-list-item-row>
+          <f7-list-item-cell class="inf-team">{{ matchs.homeTeam }}</f7-list-item-cell>
+          <f7-list-item-cell class="inf-team">{{ matchs.awayTeam }}</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell v-if="matchs.homeGoals || matchs.awayGoals" class="inf-title">Goals</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell>{{ matchs.homeGoals }}</f7-list-item-cell>
+          <f7-list-item-cell>{{ matchs.awayGoals }}</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell v-if="matchs.homeGoalDetails || matchs.awayGoalDetails" class="inf-title">Goals Details</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell>{{ matchs.homeGoalDetails }}</f7-list-item-cell>
+          <f7-list-item-cell>{{ matchs.awayGoalDetails }}</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell v-if="matchs.homeTeamFormation || matchs.awayTeamFormation" class="inf-title">Team Formation</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell>{{ matchs.homeTeamFormation }}</f7-list-item-cell>
+          <f7-list-item-cell>{{ matchs.awayTeamFormation }}</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell v-if="matchs.homeTeamYellowCardDetails || matchs.awayTeamYellowCardDetails" class="inf-title">Yellow Cards</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell>{{ matchs.homeTeamYellowCardDetails }}</f7-list-item-cell>
+          <f7-list-item-cell>{{ matchs.awayTeamYellowCardDetails }}</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell v-if="matchs.homeTeamRedCardDetails || matchs.awayTeamRedCardDetails" class="inf-title">Red Cards</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell>{{ matchs.homeTeamRedCardDetails }}</f7-list-item-cell>
+          <f7-list-item-cell>{{ matchs.awayTeamRedCardDetails }}</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell v-if="matchs.stadium" class="inf-title">Stadium</f7-list-item-cell>
+        </f7-list-item-row>
+        <f7-list-item-row>
+          <f7-list-item-cell>{{ matchs.stadium }}</f7-list-item-cell>
+        </f7-list-item-row>
+        </f7-list-item-cell>
+      </f7-list-item>
+      <f7-list-item></f7-list-item>
+    </f7-list>
   </f7-page>
 </template>
 

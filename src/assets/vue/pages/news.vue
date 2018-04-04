@@ -23,26 +23,36 @@
 </template>
 
 <script>
-import axios from "axios";
+import { getDataArticle, checkIfUpdate } from "../../js/function";
 
 export default {
   data() {
     return {
+      storage: window.localStorage,
       articles: []
     };
   },
   mounted() {
-    var app = this;
-    axios
-      .get(
-        "https://newsapi.org/v2/top-headlines?sources=talksport&apiKey=0e05cfcfe2724a07846e6f1ade74520f"
-      )
-      .then(function(res) {
-        app.articles = res.data.articles;
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    let lastUpdateArticles = this.storage.getItem("lastUpdateArticles");
+
+    this.$f7.preloader.show();
+
+    if (checkIfUpdate(lastUpdateArticles)) {
+      getDataArticle()
+        .then(result => {
+          this.articles = result;
+          this.storage.setItem("articles", JSON.stringify(this.articles));
+          this.storage.setItem("lastUpdateArticles", new Date());
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.articles = JSON.parse(this.storage.getItem("articles"));
+          this.$f7.dialog.alert(error, "Error");
+        });
+    } else {
+      this.articles = JSON.parse(this.storage.getItem("articles"));
+      this.$f7.preloader.hide();
+    }
   },
   methods: {
     newsData(index) {
@@ -54,16 +64,18 @@ export default {
       let date = tempDate.getDate().toString();
       let month = (tempDate.getMonth() + 1).toString();
       let year = tempDate.getFullYear().toString();
-      let hour = tempDate.getUTCHours().toString();;
-      let minute = tempDate.getMinutes().toString();;
+      let hour = tempDate.getUTCHours().toString();
+      let minute = tempDate.getMinutes().toString();
 
       date = date[1] ? date : "0" + date[0];
       month = month[1] ? month : "0" + month[0];
       year = year[2] + year[3];
       hour = hour[1] ? hour : "0" + hour[0];
-      minute = minute[1] ? minute : "0" + minute[0];      
+      minute = minute[1] ? minute : "0" + minute[0];
 
-      return date + "." + month + "." + year + " " + "-" + " " + hour + ":" + minute;
+      return (
+        date + "." + month + "." + year + " " + "-" + " " + hour + ":" + minute
+      );
     }
   }
 };
