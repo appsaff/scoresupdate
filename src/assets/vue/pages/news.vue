@@ -2,7 +2,7 @@
   <f7-page class="news-page">
     <f7-navbar class="navbar-top" back-link="Back">
       <div class="titles">
-        <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
+        <f7-nav-title class="head-title" title="Score">Scores Update</f7-nav-title>
         <f7-nav-title class="subtitle">News</f7-nav-title>
       </div>
       <f7-nav-right>

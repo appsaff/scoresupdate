@@ -7,10 +7,13 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "com.izzi.soccer"
+    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.izzi.soccer"
     },
-    "cordova-plugin-vibration": {
+    "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "com.izzi.soccer"
     }
   },

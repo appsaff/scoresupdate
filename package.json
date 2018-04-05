@@ -1,9 +1,9 @@
 {
-    "name": "com.izzi.soccer",
+    "name": "com.izzi.scoresupdate",
     "version": "1.0.0",
-    "description": "Brand new cordova project with framework7 - vue - webpack!",
+    "description": "Scores Update - Your scores delivery",
     "scripts": {
-        "default": "echo \"There is no scripts you can run with npm run command.\" && exit 1",
+        "build": "cordova run build",
         "dev": "cordova run browser -- --lr"
     },
     "keywords": [
@@ -46,6 +46,7 @@
         "babel-preset-env": "^1.6.1",
         "cordova-android": "^7.0.0",
         "cordova-browser": "^5.0.3",
+        "cordova-plugin-splashscreen": "^5.0.2",
         "cordova-plugin-vibration": "^3.0.1",
         "cordova-plugin-whitelist": "^1.3.3",
         "font-awesome": "^4.7.0",
@@ -59,11 +60,12 @@
         "vue-persistent-state": "^0.1.1",
         "vuex": "^3.0.1"
     },
-    "displayName": "Soccer",
+    "displayName": "Scores Update",
     "cordova": {
         "plugins": {
             "cordova-plugin-whitelist": {},
-            "cordova-plugin-vibration": {}
+            "cordova-plugin-vibration": {},
+            "cordova-plugin-splashscreen": {}
         },
         "platforms": [
             "browser",

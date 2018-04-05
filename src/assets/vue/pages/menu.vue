@@ -2,7 +2,7 @@
   <f7-page class="menu-page">
     <f7-navbar class="navbar-top" back-link="Back">
       <div class="titles">
-        <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
+        <f7-nav-title class="head-title" title="Score">Scores Update</f7-nav-title>
         <f7-nav-title class="subtitle">Menu</f7-nav-title>
       </div>
       <f7-nav-right>
@@ -128,6 +128,7 @@ export default {
 }
 .menu-page .search-block .searchbar input {
   padding: 0px;
+  padding-left: 0px!important;
   text-align: center;
   color: #fff;
 }

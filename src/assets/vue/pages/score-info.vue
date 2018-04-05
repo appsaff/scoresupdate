@@ -2,8 +2,8 @@
   <f7-page class="head-page">
     <f7-navbar class="navbar-top" back-link="Back">
       <div class="titles">
-        <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
-        <f7-nav-title class="subtitle">Head to Head</f7-nav-title>
+        <f7-nav-title class="head-title" title="Score">Scores Update</f7-nav-title>
+        <f7-nav-title class="subtitle">Info</f7-nav-title>
       </div>
       <f7-nav-right>
         <f7-link href="#" class="like"><f7-icon class="is-gray" ion="heart" size="35px"></f7-icon></f7-link>

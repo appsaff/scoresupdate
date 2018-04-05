@@ -2,7 +2,7 @@
   <f7-page class="live-page">
     <f7-navbar class="navbar-top" back-link="Back">
       <div class="titles">
-        <f7-nav-title class="head-title" title="Score">Soccer</f7-nav-title>
+        <f7-nav-title class="head-title" title="Score">Scores Update</f7-nav-title>
         <f7-nav-title class="subtitle">Live</f7-nav-title>
       </div>
       <f7-nav-right>
@@ -81,7 +81,7 @@ export default {
     },
     getHeadToHead(id) {
       let match = this.matchs[id];
-      this.$f7router.navigate("/headtohead/" + id, {
+      this.$f7router.navigate("/match-info/" + id, {
         context: { match: match }
       });
     },

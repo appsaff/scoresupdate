@@ -3,13 +3,13 @@
     <f7-block-title>SETTINGS</f7-block-title>
     <f7-list>
       <f7-list-item title="Automatic refresh"><f7-toggle id="autorefresh" @change="autorefresh" :checked="settings.autorefresh" color="black"></f7-toggle></f7-list-item>
-      <!-- <f7-list-item title="Vibration"><f7-toggle id="vibration" @change="vibration" :checked="settings.vibration" color="black"></f7-toggle></f7-list-item> -->
+      <f7-list-item title="Vibration"><f7-toggle id="vibration" @change="vibration" :checked="settings.vibration" color="black"></f7-toggle></f7-list-item>
     </f7-list>
     <f7-button @click="clearCache()" round-md>Clear cache</f7-button>
     <f7-button @click="updateData()" round-md>Refresh</f7-button>
     <f7-block-title>INFO</f7-block-title>
     <f7-block>
-      <p>Version 1.0.0-beta</p>
+      <p>Version 1.0.0</p>
     </f7-block>
   </f7-page>
 </template>

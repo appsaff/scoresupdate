@@ -5,7 +5,7 @@
           <f7-link panel-open="left"><f7-icon ion="navicon" size="44px"></f7-icon></f7-link>
         </f7-nav-left>
         <div class="titles">
-          <f7-nav-title subtitle="Score">Soccer</f7-nav-title>
+          <f7-nav-title subtitle="Score">Scores Update</f7-nav-title>
           <f7-nav-title class="subtitle">Score</f7-nav-title>
         </div>
         <f7-nav-right>
@@ -147,7 +147,7 @@ export default {
       this.storage.setItem("favour", JSON.stringify(this.favour));
     },
     getHeadToHead(id) {
-      this.$f7router.navigate("/headtohead_score/" + id);
+      this.$f7router.navigate("/score-info/" + id);
     },
     publishDate(value) {
       let tempDate = new Date(value);

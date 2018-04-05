@@ -16,12 +16,12 @@ export default [
     component: require('./assets/vue/pages/menu.vue')
   },
   {
-    path: '/headtohead_score/:id',
-    component: require('./assets/vue/pages/headtohead_score.vue')
+    path: '/score-info/:id',
+    component: require('./assets/vue/pages/score-info.vue')
   },
   {
-    path: '/headtohead/:id',
-    component: require('./assets/vue/pages/headtohead.vue')
+    path: '/match-info/:id',
+    component: require('./assets/vue/pages/match-info.vue')
   },
   {
     path: '/scoreitem/:id',

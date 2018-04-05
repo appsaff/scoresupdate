@@ -12,6 +12,9 @@
     },
     "cordova-plugin-vibration": {
       "PACKAGE_NAME": "com.izzi.soccer"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.izzi.scoresupdate"
     }
   },
   "dependent_plugins": {}
