@@ -33,109 +33,123 @@
 </template>
 
 <script>
-import { getDataLeague, checkIfUpdate } from "../../js/function";
-import { error } from "util";
-export default {
-  data() {
-    return {
-      storage: window.localStorage,
-      leagues: []
-    };
-  },
-  mounted() {
-    let lastUpdateLeagues = this.storage.getItem("lastUpdateLeagues");
+  import { getDataLeague, checkIfUpdate } from "../../js/function";
 
-    this.$f7.preloader.show();
+  export default {
+    data() {
+      return {
+        storage: window.localStorage,
+        leagues: []
+      };
+    },
+    mounted() {
+      let lastUpdateLeagues = this.storage.getItem("lastUpdateLeagues");
 
-    if (checkIfUpdate(lastUpdateLeagues)) {
-      getDataLeague()
-        .then(result => {
-          this.leagues = result;
-          this.storage.setItem("leagues", JSON.stringify(this.leagues));
-          this.storage.setItem("lastUpdateLeagues", new Date());
-          this.$f7.preloader.hide();
-        })
-        .catch(error => {
-          this.leagues = JSON.parse(this.storage.getItem("leagues"));
-          this.$f7.dialog.alert(error, "Error");
+      this.$f7.preloader.show();
+
+      if (checkIfUpdate(lastUpdateLeagues)) {
+        getDataLeague()
+          .then(result => {
+            this.leagues = result;
+            this.storage.setItem("leagues", JSON.stringify(this.leagues));
+            this.storage.setItem("lastUpdateLeagues", new Date());
+            this.$f7.preloader.hide();
+          })
+          .catch(error => {
+            this.leagues = JSON.parse(this.storage.getItem("leagues"));
+            this.$f7.dialog.alert(error, "Error");
+          });
+      } else {
+        this.leagues = JSON.parse(this.storage.getItem("leagues"));
+        this.$f7.preloader.hide();
+      }
+    },
+    methods: {
+      getLeague(id, name, countryName) {
+        this.$f7router.navigate("/scoreitem/" + id, {
+          context: { name: name, countryName: countryName }
         });
-    } else {
-      this.leagues = JSON.parse(this.storage.getItem("leagues"));
-      this.$f7.preloader.hide();
+      }
     }
-  },
-  methods: {
-    getLeague(id, name, countryName) {
-      this.$f7router.navigate("/scoreitem/" + id, {
-        context: { name: name, countryName: countryName }
-      });
-    }
-  }
-};
+  };
 </script>
+
 <style>
-.md .menu-page .subnavbar-inner {
-  padding: 0;
-}
-.md .searchbar-icon {
-  background-image: url("../../../static/img/search.png");
-  background-size: 20px 20px;
-}
-.md .searchbar-disable-button {
-  background-image: url("../../../static/img/arrow.png");
-  background-size: 20px 16px;
-}
-.md .searchbar .input-clear-button {
-  background-image: url("../../../static/img/close.png");
-  background-size: 18px 18px;
-}
-.md .searchbar input::-webkit-input-placeholder {
-  font-family: "robotolight";
-  font-size: 18px;
-  font-weight: 100;
-}
-.md .head-title {
-  color: #fdf018;
-}
-.md .menu-page {
-  background-color: #f7f7f7;
-}
-.md .menu-page .team {
-  margin: 0px;
-}
-.md .menu-page .team .menu-link {
-  width: 100%;
-}
-.menu-page .search-block {
-  background: linear-gradient(
-    to right,
-    rgba(105, 41, 135, 1) 0%,
-    rgba(202, 116, 213, 1) 100%
-  );
-  margin: 0px;
-  padding: 10px 16px;
-  width: 100%;
-}
-.menu-page .search-block .searchbar {
-  margin: 0px;
-  height: 40px;
-  background: linear-gradient(
-    to right,
-    rgba(110, 44, 144, 1) 0%,
-    rgba(144, 56, 194, 1) 100%
-  );
-  border: 1px solid #66069ca6;
-}
-.menu-page .search-block .searchbar input {
-  padding: 0px;
-  padding-left: 0px!important;
-  text-align: center;
-  color: #fff;
-}
-.menu-page .search-block .searchbar input::placeholder {
-  color: #fff;
-}
-.menu-page .navbar-top:after {
-  display: none;
-}
+  .md .menu-page .subnavbar-inner {
+    padding: 0;
+  }
+
+  .md .searchbar-icon {
+    background-image: url("../../../static/img/search.png");
+    background-size: 20px 20px;
+  }
+
+  .md .searchbar-disable-button {
+    background-image: url("../../../static/img/arrow.png");
+    background-size: 20px 16px;
+  }
+
+  .md .searchbar .input-clear-button {
+    background-image: url("../../../static/img/close.png");
+    background-size: 18px 18px;
+  }
+
+  .md .searchbar input::-webkit-input-placeholder {
+    font-family: "robotolight";
+    font-size: 18px;
+    font-weight: 100;
+  }
+
+  .md .head-title {
+    color: #fdf018;
+  }
+
+  .md .menu-page {
+    background-color: #f7f7f7;
+  }
+
+  .md .menu-page .team {
+    margin: 0px;
+  }
+
+  .md .menu-page .team .menu-link {
+    width: 100%;
+  }
+
+  .menu-page .search-block {
+    background: linear-gradient(
+      to right,
+      rgba(105, 41, 135, 1) 0%,
+      rgba(202, 116, 213, 1) 100%
+    );
+    margin: 0px;
+    padding: 10px 16px;
+    width: 100%;
+  }
+
+  .menu-page .search-block .searchbar {
+    margin: 0px;
+    height: 40px;
+    background: linear-gradient(
+      to right,
+      rgba(110, 44, 144, 1) 0%,
+      rgba(144, 56, 194, 1) 100%
+    );
+    border: 1px solid #66069ca6;
+  }
+
+  .menu-page .search-block .searchbar input {
+    padding: 0px;
+    padding-left: 0px!important;
+    text-align: center;
+    color: #fff;
+  }
+
+  .menu-page .search-block .searchbar input::placeholder {
+    color: #fff;
+  }
+
+  .menu-page .navbar-top:after {
+    display: none;
+  }
 </style>

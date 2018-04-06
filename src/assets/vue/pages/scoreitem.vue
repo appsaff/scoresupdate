@@ -52,212 +52,236 @@
 </template>
 
 <script>
-import { getAllFixtures, checkIfUpdate } from "../../js/function";
+  import { getAllFixtures, checkIfUpdate } from "../../js/function";
 
-export default {
-  data() {
-    return {
-      storage: window.localStorage,
-      name: "",
-      context: {},
-      matchs: [],
-      favour: []
-    };
-  },
-  mounted() {
-    let leagueId = this.$f7route.params.id;
-    let lastUpdate = this.storage.getItem("lastUpdateallFixtures_" + leagueId);
-
-    this.context = this.$f7route.context;
-
-    this.$f7.preloader.show();
-
-    if (checkIfUpdate(lastUpdate)) {
-      getAllFixtures(leagueId)
-        .then(result => {
-          this.matchs = result;
-          this.storage.setItem(
-            "allFixtures_" + leagueId,
-            JSON.stringify(this.matchs)
-          );
-          this.storage.setItem("lastUpdateallFixtures_" + leagueId, new Date());
-          this.$f7.preloader.hide();
-        })
-        .catch(error => {
-          this.matchs = JSON.parse(
-            this.storage.getItem("allFixtures_" + leagueId)
-          );
-          this.$f7.dialog.alert(error, "Error");
-        });
-    } else {
-      this.matchs = JSON.parse(this.storage.getItem("allFixtures_" + leagueId));
-      this.$f7.preloader.hide();
-    }
-  },
-
-  methods: {
-    getHeadToHead(id) {
-      let match = this.matchs[id];
-
-      this.$f7router.navigate("/match-info/" + id, {
-        context: { match: match }
-      });
+  export default {
+    data() {
+      return {
+        storage: window.localStorage,
+        name: "",
+        context: {},
+        matchs: [],
+        favour: []
+      };
     },
-    favourData(event) {
-      let self = this;
+    mounted() {
+      let leagueId = this.$f7route.params.id;
+      let lastUpdate = this.storage.getItem("lastUpdateallFixtures_" + leagueId);
 
-      const value = JSON.parse(event.target.value);
+      this.context = this.$f7route.context;
 
-      if (event.target.checked) {
-        this.favour.push(value);
+      this.$f7.preloader.show();
+
+      if (checkIfUpdate(lastUpdate)) {
+        getAllFixtures(leagueId)
+          .then(result => {
+            this.matchs = result;
+            this.storage.setItem(
+              "allFixtures_" + leagueId,
+              JSON.stringify(this.matchs)
+            );
+            this.storage.setItem("lastUpdateallFixtures_" + leagueId, new Date());
+            this.$f7.preloader.hide();
+          })
+          .catch(error => {
+            this.matchs = JSON.parse(
+              this.storage.getItem("allFixtures_" + leagueId)
+            );
+            this.$f7.dialog.alert(error, "Error");
+          });
       } else {
-        this.favour.forEach(function(item, i) {
-          if (item.id == value.id) {
-            self.favour.splice(i, 1);
-          }
-        });
+        this.matchs = JSON.parse(this.storage.getItem("allFixtures_" + leagueId));
+        this.$f7.preloader.hide();
       }
-
-      this.storage.setItem("favour", JSON.stringify(this.favour));
     },
-    publishDate(value) {
-      let tempDate = new Date(value);
-      let date = tempDate.getDate().toString();
-      let month = (tempDate.getMonth() + 1).toString();
-      let year = tempDate.getFullYear().toString();
 
-      date = date[1] ? date : "0" + date[0];
-      month = month[1] ? month : "0" + month[0];
-      year = year[2] + year[3];
+    methods: {
+      getHeadToHead(id) {
+        let match = this.matchs[id];
 
-      return date + "." + month + "." + year;
+        this.$f7router.navigate("/match-info/" + id, {
+          context: { match: match }
+        });
+      },
+      favourData(event) {
+        let self = this;
+
+        const value = JSON.parse(event.target.value);
+
+        if (event.target.checked) {
+          this.favour.push(value);
+        } else {
+          this.favour.forEach(function(item, i) {
+            if (item.id == value.id) {
+              self.favour.splice(i, 1);
+            }
+          });
+        }
+
+        this.storage.setItem("favour", JSON.stringify(this.favour));
+      },
+      publishDate(value) {
+        let tempDate = new Date(value);
+        let date = tempDate.getDate().toString();
+        let month = (tempDate.getMonth() + 1).toString();
+        let year = tempDate.getFullYear().toString();
+
+        date = date[1] ? date : "0" + date[0];
+        month = month[1] ? month : "0" + month[0];
+        year = year[2] + year[3];
+
+        return date + "." + month + "." + year;
+      }
     }
-  }
-};
+  };
 </script>
+
 <style>
-.md .icon-checkbox {
-  display: inline-block;
-  vertical-align: middle;
-  width: 30px;
-  height: 30px;
-  background: url("../../../static/img/heart.png") no-repeat;
-}
-.md .checkbox i {
-  border: none;
-  width: 30px;
-  height: 30px;
-}
-.md .checkbox i:after {
-  background: none;
-  width: 30px;
-  height: 30px;
-}
-.md .checkbox input[type="checkbox"]:checked ~ i {
-  display: inline-block;
-  vertical-align: middle;
-  width: 30px;
-  height: 30px;
-  background: url("../../../static/img/heart_ok.png") no-repeat;
-}
-.md .left-bot {
-  width: 100%;
-}
-.md .scoreit-page .link-head {
-  width: 100%;
-  color: #000;
-}
-.md .scoreit-page .link span + span {
-  margin-left: 0px;
-}
-.md .searchbar-icon {
-  background-image: url("../../../static/img/search.png");
-  background-size: 20px 20px;
-}
-.md .searchbar-disable-button {
-  background-image: url("../../../static/img/arrow.png");
-  background-size: 20px 16px;
-}
-.md .searchbar .input-clear-button {
-  background-image: url("../../../static/img/close.png");
-  background-size: 18px 18px;
-}
-.md .is-gray {
-  color: #786f72;
-}
-.md .head-title {
-  color: #fdf018;
-}
-.md .scoreit-page {
-  background-color: #f7f7f7;
-}
-.scoreit-page .search-block {
-  background: linear-gradient(
-    to right,
-    rgba(105, 41, 135, 1) 0%,
-    rgba(202, 116, 213, 1) 100%
-  );
-  margin: 0px;
-  padding: 10px 16px;
-}
-.scoreit-page .search-block .searchbar {
-  margin: 0px;
-  height: 40px;
-  background: linear-gradient(
-    to right,
-    rgba(110, 44, 144, 1) 0%,
-    rgba(144, 56, 194, 1) 100%
-  );
-  border: 1px solid #66069ca6;
-}
-.scoreit-page .search-block .searchbar input {
-  padding: 0px;
-  padding-left: 0px!important;
-  text-align: center;
-  color: #fff;
-}
+  .md .icon-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    background: url("../../../static/img/heart.png") no-repeat;
+  }
 
-.scoreit-page .search-block .searchbar input::placeholder {
-  color: #fff;
-}
+  .md .checkbox i {
+    border: none;
+    width: 30px;
+    height: 30px;
+  }
 
-.scoreit-page .navbar-top:after {
-  display: none;
-}
-.md .team {
-  margin: 10px 0;
-}
-.team .top-b {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
-  box-shadow: 0px 2px 6px 0px rgba(77, 77, 77, 0.1);
-  line-height: 1.3;
-}
-.team .bottom-b {
-  position: relative;
-  padding-bottom: 5px;
-}
-.team .top-b p {
-  font-weight: 600;
-  font-size: 14px;
-}
-.team .top-b img {
-  width: 73px;
-}
-.md .scoreit-page .teams .team {
-  margin: 0px;
-}
-.md .scoreit-page .teams .team .item-inner {
-  padding-top: 0px;
-}
-.md .scoreit-page .team .bottom-b:after {
-  content: "";
-  position: absolute;
-  border-bottom: 1px solid #000;
-  width: 100%;
-  bottom: 0px;
-}
+  .md .checkbox i:after {
+    background: none;
+    width: 30px;
+    height: 30px;
+  }
+
+  .md .checkbox input[type="checkbox"]:checked ~ i {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    background: url("../../../static/img/heart_ok.png") no-repeat;
+  }
+
+  .md .left-bot {
+    width: 100%;
+  }
+
+  .md .scoreit-page .link-head {
+    width: 100%;
+    color: #000;
+  }
+
+  .md .scoreit-page .link span + span {
+    margin-left: 0px;
+  }
+
+  .md .searchbar-icon {
+    background-image: url("../../../static/img/search.png");
+    background-size: 20px 20px;
+  }
+
+  .md .searchbar-disable-button {
+    background-image: url("../../../static/img/arrow.png");
+    background-size: 20px 16px;
+  }
+
+  .md .searchbar .input-clear-button {
+    background-image: url("../../../static/img/close.png");
+    background-size: 18px 18px;
+  }
+
+  .md .is-gray {
+    color: #786f72;
+  }
+
+  .md .head-title {
+    color: #fdf018;
+  }
+
+  .md .scoreit-page {
+    background-color: #f7f7f7;
+  }
+
+  .scoreit-page .search-block {
+    background: linear-gradient(
+      to right,
+      rgba(105, 41, 135, 1) 0%,
+      rgba(202, 116, 213, 1) 100%
+    );
+    margin: 0px;
+    padding: 10px 16px;
+  }
+
+  .scoreit-page .search-block .searchbar {
+    margin: 0px;
+    height: 40px;
+    background: linear-gradient(
+      to right,
+      rgba(110, 44, 144, 1) 0%,
+      rgba(144, 56, 194, 1) 100%
+    );
+    border: 1px solid #66069ca6;
+  }
+
+  .scoreit-page .search-block .searchbar input {
+    padding: 0px;
+    padding-left: 0px!important;
+    text-align: center;
+    color: #fff;
+  }
+
+  .scoreit-page .search-block .searchbar input::placeholder {
+    color: #fff;
+  }
+
+  .scoreit-page .navbar-top:after {
+    display: none;
+  }
+
+  .md .team {
+    margin: 10px 0;
+  }
+
+  .team .top-b {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    box-shadow: 0px 2px 6px 0px rgba(77, 77, 77, 0.1);
+    line-height: 1.3;
+  }
+
+  .team .bottom-b {
+    position: relative;
+    padding-bottom: 5px;
+  }
+
+  .team .top-b p {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .team .top-b img {
+    width: 73px;
+  }
+
+  .md .scoreit-page .teams .team {
+    margin: 0px;
+  }
+
+  .md .scoreit-page .teams .team .item-inner {
+    padding-top: 0px;
+  }
+
+  .md .scoreit-page .team .bottom-b:after {
+    content: "";
+    position: absolute;
+    border-bottom: 1px solid #000;
+    width: 100%;
+    bottom: 0px;
+  }
 </style>

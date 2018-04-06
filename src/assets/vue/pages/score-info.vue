@@ -11,7 +11,7 @@
     </f7-navbar> 
     <f7-block class="head-live">
       <div class="head-live-left"> 
-        <div class="time-block">
+        <div class="time-block" v-if="match.time">
           <span>{{ match.time }}</span>
         </div>
         <div class="name-block">
@@ -20,7 +20,7 @@
           <p>{{ match.awayTeam }}</p>
         </div>
       </div> 
-      <div class="head-live-right"> 
+      <div class="head-live-right" v-if="match.date"> 
         {{ showDate(match.date) }}
       </div> 
     </f7-block>
@@ -70,7 +70,7 @@
           <f7-list-item-cell v-if="match.stadium" class="inf-title">Stadium</f7-list-item-cell>
         </f7-list-item-row>
         <f7-list-item-row>
-          <f7-list-item-cell>{{ match.stadium }}</f7-list-item-cell>
+          <f7-list-item-cell v-if="match.stadium" >{{ match.stadium }}</f7-list-item-cell>
         </f7-list-item-row>
         </f7-list-item-cell>
       </f7-list-item>
@@ -80,7 +80,8 @@
 </template>
 
 <script>
-import { HTTP } from "../../js/http";
+import { getFixturesMatchs, checkIfUpdate } from "../../js/function";
+
 export default {
   data() {
     return {
@@ -91,21 +92,26 @@ export default {
   },
   mounted() {
     let matchId = this.$f7route.params.id;
+    let lastUpdateFixtures = this.storage.getItem("lastUpdateFixtures");
 
     this.$f7.preloader.show();
-    HTTP.get("getFixturesMatchs")
-      .then(response => {
-        let data = response.data.match;
-        data.forEach(item => {
-          if (item.id == matchId) {
-            this.match = item;
-          }
+
+    if (checkIfUpdate(lastUpdateFixtures)) {
+      getFixturesMatchs()
+        .then(result => {
+          this.storage.setItem("fixtures", JSON.stringify(result));
+          this.storage.setItem("lastUpdateFixtures", new Date());
+          this.match = this.getFixture(matchId);
+          this.$f7.preloader.hide();
+        })
+        .catch(error => {
+          this.match = this.getFixture(matchId);
+          this.$f7.dialog.alert(error, "Error");
         });
-        this.$f7.preloader.hide();
-      })
-      .catch(function(error) {
-        this.$f7.preloader.hide();
-      });
+    } else {
+      this.match = this.getFixture(matchId);
+      this.$f7.preloader.hide();
+    }
   },
   methods: {
     devideElem(elem) {
@@ -129,6 +135,17 @@ export default {
       year = year[2] + year[3];
 
       return date + "." + month + "." + year;
+    },
+    getFixture(id) {
+      let data = JSON.parse(this.storage.getItem("fixtures"));
+      let match = [];
+
+      data.forEach(item => {
+        if (item.id == id) {
+          match = item;
+        }
+      });
+      return match;
     }
   }
 };
@@ -138,40 +155,49 @@ export default {
 .md .inf-list {
   margin: 0px;
 }
+
 .md .inf-team {
   text-align: center;
   padding: 5px 10px;
   font-weight: 600;
   font-size: 16px;
 }
+
 .md .inf-title {
   padding: 5px 10px;
   font-weight: 600;
   font-size: 14px;
   background-color: rgba(127, 48, 140, 0.18);
 }
+
 .teams .team .item-inner .bottom-b .head-date {
   font-size: 12px;
 }
+
 .md .head-page .bottom-b {
   padding-bottom: 7px;
 }
+
 .md .head-page .point-block {
   margin-right: 0px;
 }
+
 .md .is-gray {
   color: #786f72;
 }
+
 .md .head-live {
   display: flex;
   margin: 0px;
   background-color: #973ece;
 }
+
 .md .head-live-left {
   justify-content: flex-start;
   display: flex;
   width: 80%;
 }
+
 .md .head-live-left .name-block p {
   margin: 0px;
   line-height: 17px;
@@ -179,18 +205,22 @@ export default {
   font-weight: 400;
   font-size: 14px;
 }
+
 .md .head-live-left .name-block h5 {
   margin: 0px;
   color: #fff;
   font-weight: 200;
 }
+
 .md .head-live-left .time-block img {
   width: 40px;
 }
+
 .md .head-live-left .time-block span {
   color: #fff;
   font-size: 10px;
 }
+
 .md .head-live-right {
   text-align: right;
   width: 20%;
@@ -198,44 +228,56 @@ export default {
   font-weight: 400;
   font-size: 10px;
 }
+
 .md .head-title {
   color: #fdf018;
 }
+
 .md .head-page .tabbar-head-second {
   background-color: #973ece;
   border-bottom: 3px solid rgba(202, 116, 213, 1);
 }
+
 .md .tabbar-head-second .tab-link-highlight {
   background: none;
 }
+
 .md .head-page .tabbar-head-second a.link {
   line-height: 12px;
   min-width: 44px;
   text-transform: none;
 }
+
 .md .head-page .tabbar-head-second a.tab-link-active {
   background: rgba(202, 116, 213, 1);
 }
+
 .md .head-page .toolbar:after {
   display: none;
 }
+
 .md .head-page .navbar-top .right {
   width: 56px;
 }
+
 .md .head-page .navbar-top .titles {
   margin-right: 0px;
 }
+
 .md .head-page .tabbar-head {
   background: rgba(202, 116, 213, 1);
 }
+
 .md .head-page .tabbar-head a.link {
   line-height: 12px;
   min-width: 44px;
   text-transform: none;
 }
+
 .md .head-page {
   background-color: #f7f7f7;
 }
+
 .head-page .search-block {
   background: linear-gradient(
     to right,
@@ -245,6 +287,7 @@ export default {
   margin: 0px;
   padding: 10px 16px;
 }
+
 .head-page .search-block .searchbar {
   margin: 0px;
   height: 40px;
@@ -255,6 +298,7 @@ export default {
   );
   border: 1px solid #66069ca6;
 }
+
 .head-page .search-block .searchbar input {
   padding: 0px;
   text-align: center;
@@ -264,18 +308,23 @@ export default {
 .head-page .search-block .searchbar input::placeholder {
   color: #fff;
 }
+
 .md .head-page .search-block .searchbar .searchbar-disable-button {
   left: 80px;
 }
+
 .md .head-page .search-block .searchbar .searchbar-input-wrap .searchbar-icon {
   left: 80px;
 }
+
 .head-page .navbar-top:after {
   display: none;
 }
+
 .md .team {
   margin: 10px 0;
 }
+
 .team .top-b {
   display: flex;
   width: 100%;
@@ -285,9 +334,11 @@ export default {
   box-shadow: 0px 2px 6px 0px rgba(77, 77, 77, 0.1);
   line-height: 1.3;
 }
+
 .team .bottom-b {
   position: relative;
 }
+
 .md .head-page .team .bottom-b:after {
   content: "";
   position: absolute;
@@ -295,20 +346,25 @@ export default {
   width: 100%;
   bottom: 0;
 }
+
 .team .top-b p {
   font-weight: 600;
   font-size: 12px;
   text-transform: uppercase;
 }
+
 .team .top-b img {
   width: 73px;
 }
+
 .tabbar-head i::before {
   line-height: 0.6;
 }
+
 .md .head-page .teams .team {
   margin: 0px;
 }
+
 .md .head-page .teams .team .item-inner {
   padding-top: 10px;
 }

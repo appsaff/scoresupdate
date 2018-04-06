@@ -36,93 +36,105 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      storage: window.localStorage,
-      isLoading: true,
-      favour: []
-    };
-  },
-  mounted() {
-    if (this.storage.getItem("favour")) {
-      this.favour = JSON.parse(this.storage.getItem("favour"));
-    }
-  },
-  methods: {
-    removeItem(index) {
-      let storagefavorites = JSON.parse(this.storage.getItem("favour"));
-
-      storagefavorites.forEach(function(item, i) {
-        if (i == index) {
-          storagefavorites.splice(i, 1);
-        }
-      });
-      this.storage.setItem("favour", JSON.stringify(storagefavorites));
+  export default {
+    data() {
+      return {
+        storage: window.localStorage,
+        isLoading: true,
+        favour: []
+      };
     },
-    getHeadToHead(id) {
-      let match = this.favour[id];
-      this.$f7router.navigate("/match-info/" + id, {
-        context: { match: match }
-      });
+    mounted() {
+      if (this.storage.getItem("favour")) {
+        this.favour = JSON.parse(this.storage.getItem("favour"));
+      }
+    },
+    methods: {
+      removeItem(index) {
+        let storagefavorites = JSON.parse(this.storage.getItem("favour"));
+
+        storagefavorites.forEach(function(item, i) {
+          if (i == index) {
+            storagefavorites.splice(i, 1);
+          }
+        });
+        this.storage.setItem("favour", JSON.stringify(storagefavorites));
+      },
+      getHeadToHead(id) {
+        let match = this.favour[id];
+        this.$f7router.navigate("/match-info/" + id, {
+          context: { match: match }
+        });
+      }
     }
-  }
-};
+  };
 </script>
+
 <style>
-.md .icon-checkbox {
-  display: inline-block;
-  vertical-align: middle;
-  width: 30px;
-  height: 30px;
-  background: url("../../../static/img/heart.png") no-repeat;
-}
-.md .checkbox i {
-  border: none;
-  width: 30px;
-  height: 30px;
-}
-.md .checkbox i:after {
-  background: none;
-  width: 30px;
-  height: 30px;
-}
-.md .checkbox input[type="checkbox"]:checked ~ i {
-  display: inline-block;
-  vertical-align: middle;
-  width: 30px;
-  height: 30px;
-  background: url("../../../static/img/heart_ok.png") no-repeat;
-}
-.md .favour-page .bottom-b {
-  position: relative;
-}
-.md .favour-page .bottom-b a {
-  color: #000;
-}
-.md .favour-page .team .bottom-b:after {
-  content: "";
-  position: absolute;
-  border-bottom: 1px solid #000;
-  width: 100%;
-  bottom: -5px;
-}
-.md .head-title {
-  color: #fdf018;
-}
-.md .favour-page .tabbar-favor {
-  background: rgba(202, 116, 213, 1);
-}
-.md .favour-page .tabbar-favor a.link {
-  line-height: 12px;
-  min-width: 44px;
-  text-transform: none;
-  font-size: 16px;
-}
-.tabbar-favor i::before {
-  line-height: 0.6;
-}
-.md .favour-page .tabbar .tab-link-highlight {
-  background-color: #6d2b8c;
-}
+  .md .icon-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    background: url("../../../static/img/heart.png") no-repeat;
+  }
+
+  .md .checkbox i {
+    border: none;
+    width: 30px;
+    height: 30px;
+  }
+
+  .md .checkbox i:after {
+    background: none;
+    width: 30px;
+    height: 30px;
+  }
+
+  .md .checkbox input[type="checkbox"]:checked ~ i {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    background: url("../../../static/img/heart_ok.png") no-repeat;
+  }
+
+  .md .favour-page .bottom-b {
+    position: relative;
+  }
+
+  .md .favour-page .bottom-b a {
+    color: #000;
+  }
+
+  .md .favour-page .team .bottom-b:after {
+    content: "";
+    position: absolute;
+    border-bottom: 1px solid #000;
+    width: 100%;
+    bottom: -5px;
+  }
+
+  .md .head-title {
+    color: #fdf018;
+  }
+
+  .md .favour-page .tabbar-favor {
+    background: rgba(202, 116, 213, 1);
+  }
+
+  .md .favour-page .tabbar-favor a.link {
+    line-height: 12px;
+    min-width: 44px;
+    text-transform: none;
+    font-size: 16px;
+  }
+
+  .tabbar-favor i::before {
+    line-height: 0.6;
+  }
+
+  .md .favour-page .tabbar .tab-link-highlight {
+    background-color: #6d2b8c;
+  }
 </style>

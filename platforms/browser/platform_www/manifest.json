@@ -1,6 +1,6 @@
 {
-  "name": "Soccer",
-  "short_name": "Soccer",
+  "name": "Scores Update",
+  "short_name": "Scores Update",
   "description": "Description of your app from template",
   "start_url": "index.html",
   "scope": "index.html",

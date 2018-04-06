@@ -19,6 +19,5 @@
     <allow-intent href="geo:*" />
     <allow-navigation href="*" />
     <preference name="android-minSdkVersion" value="16" />
-    <preference name="SplashScreenDelay" value="7000" />
     <preference name="AutoHideSplashScreen" value="true" />
 </widget>

@@ -19,7 +19,7 @@
     <!-- Popup -->
     <f7-popup id="popup">
       <f7-view>
-        <f7-page class="popup-page">
+        <f7-page class="popup-page" name="home">
           <f7-block class="popup-block">
             <f7-block-header>
               <f7-link class="close-but" popup-close><img src="./static/img/close-pop.png" alt=""></f7-link>
@@ -37,6 +37,7 @@
               </f7-list-item>               
             </f7-list>
             <f7-button class="blue-but" @click="subscribe();">GET UPDATES</f7-button>
+            <!--
             <f7-block>
               <p>Or login with social accounts</p>
             </f7-block>
@@ -44,6 +45,7 @@
               <f7-button class="but"><f7-icon ion="social-facebook" size="18px"></f7-icon>Facebook</f7-button>
               <f7-button class="but red"><f7-icon ion="social-googleplus-outline" size="18px"></f7-icon>Google+</f7-button>
             </f7-segmented>
+            -->
           </f7-block>      
         </f7-page>
       </f7-view>
@@ -52,53 +54,49 @@
 </template>
 
 <script>
-import { HTTP } from "assets/js/http";
-export default {
-  data() {
-    return {
-      fields: {
-        name: "",
-        email: "",
-        phone: ""
-      },
-    };
-  },
-  methods: {
-    subscribe() {
-      let self = this;
-      const formData = new FormData();
+  import { HTTP } from "assets/js/http";
 
-      formData.append("name", this.fields.name);
-      formData.append("email", this.fields.email);
-      formData.append("phone", this.fields.phone);
+  export default {
+    data() {
+      return {
+        fields: {
+          name: "",
+          email: "",
+          phone: ""
+        }
+      };
+    },
+    methods: {
+      subscribe() {
+        let self = this;
+        const formData = new FormData();
 
+        formData.append("name", this.fields.name);
+        formData.append("email", this.fields.email);
+        formData.append("phone", this.fields.phone);
+
+        if ((this.fields.name.length > 0) && (this.fields.email.length > 0) && (this.fields.email.length > 0)) {
         HTTP.post("http://canappsdb.com/inc/mail.php", formData, {
           crossdomain: true
         })
-        .then(response => {
-          let data = response.data;
+          .then(response => {
+            let data = response.data;
 
-          self.$f7.dialog.alert(data.text, "Soccer", self.popupclose);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+            self.$f7.dialog.alert(data.text, "Soccer", self.popupclose);
+          })
+          .catch(error => {
+            this.$f7.dialog.alert(error, "Error");
+          });
+        } else {
+          this.$f7.dialog.alert('Please fill in all fields!', "Error");
+        }
+      },
+      popupclose() {
+        this.$f7.popup.close();
+      }
     },
-    popupclose() {
-      this.$f7.popup.close();
-    },
-   
-  },
-  // computed: {
-  //   checkFunc(){
-  //     let self = this
-  //     if (this.storage.length <= 0){
-  //       getData();
-  //     }
-  //   }
-  // },
-  mounted() {
-    VMasker(document.getElementById("phone")).maskPattern("+9 (999) 999-99-99");
-  }
-};
+    mounted() {
+      VMasker(document.getElementById("phone")).maskPattern("+9 (999) 999-99-99");
+    }
+  };
 </script>
