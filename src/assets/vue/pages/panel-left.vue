@@ -1,5 +1,5 @@
 <template>
-  <f7-page class="left-pannel">
+  <f7-page class="left-pannel" name="left-panel">
     <f7-block-title>SETTINGS</f7-block-title>
     <f7-list>
       <f7-list-item title="Automatic refresh"><f7-toggle id="autorefresh" @change="autorefresh" :checked="settings.autorefresh" color="black"></f7-toggle></f7-list-item>

@@ -46,10 +46,31 @@ export default new Vue({
     app,
   },
   framework7: {
-    id: 'io.framework7.testapp',
-    theme: 'md', // md or ios
+    id: 'com.izzi.scoresupdate',
+    theme: 'md',
   },
   routes,
+  mounted() {
+    document.addEventListener("backbutton", () => {
+      let isHome = this.$$('.page-current[data-name="home"]');
+      let isPopup = (this.$$('#popup').css('display') == 'block') ? true : false;
+      let isLeftPanel = this.$$('.panel-active');
+
+      if (isPopup) {
+        this.$f7.popup.close();
+      } else if (isLeftPanel.length > 0) {
+        this.$f7.panel.close();
+      } else if (isHome.length > 0) {
+        this.$f7.dialog.confirm("Are you sure you want to exit?", () => {
+          navigator.app.exitApp();
+        }, () => {
+          return false;
+        }, "Confirmation");
+      } else {
+        this.$f7.router.back();
+      }
+    }, false);
+  }
 });
 
 document.addEventListener('deviceready', () => {
@@ -58,12 +79,12 @@ document.addEventListener('deviceready', () => {
 
   // ADMob Init
   var admobid = {};
-  if( /(android)/i.test(navigator.userAgent) ) { // for android & amazon-fireos
+  if (/(android)/i.test(navigator.userAgent)) { // for android & amazon-fireos
     admobid = {
       banner: 'ca-app-pub-xxx/xxx', // or DFP format "/6253334/dfp_example_ad"
       interstitial: 'ca-app-pub-xxx/yyy'
     };
-  } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) { // for ios
+  } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) { // for ios
     admobid = {
       banner: 'ca-app-pub-xxx/zzz', // or DFP format "/6253334/dfp_example_ad"
       interstitial: 'ca-app-pub-xxx/kkk'
@@ -82,6 +103,7 @@ document.addEventListener('deviceready', () => {
   });
 
 }, false);
+
 
 // Register for any Urban Airship push events
 //document.addEventListener("urbanairship.push", function (event) {

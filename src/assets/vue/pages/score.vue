@@ -1,55 +1,55 @@
 <template>
-  <f7-page>
-      <f7-navbar class="navbar-top">
-        <f7-nav-left>
-          <f7-link panel-open="left"><f7-icon ion="navicon" size="44px"></f7-icon></f7-link>
-        </f7-nav-left>
-        <div class="titles">
-          <f7-nav-title subtitle="Score">Scores Update</f7-nav-title>
-          <f7-nav-title class="subtitle">Score</f7-nav-title>
-        </div>
-        <f7-nav-right>
-        </f7-nav-right>
-      </f7-navbar>
-      <f7-subnavbar class="toolbar-top">
-        <f7-link class="ic-home"><f7-icon ion="android-home" size="40px"></f7-icon></f7-link>
-        <f7-toolbar  tabbar class="tabbar-top">
-          <f7-link v-for="(day, index) in days" :key="index" :tab-link="'#tabc' + index" :tab-link-active="day.status"><div>{{ day.dayName }}</div><div>{{ day.dayNumb }}</div></f7-link>
-        </f7-toolbar>
-      </f7-subnavbar>
-      <f7-tabs swipeable class="bg-tabs">
-        <f7-tab v-for="(day, index) in days" :key="index" :id="'tabc' + index" :tab-active="day.status">
-          <f7-list class="teams">
-            <f7-list-item v-for="(match, index) in getCurretMatch(day.dayNumb)" :key="index" class="team">
-              <div class="top-b"> 
-                <p>{{ match.league }}</p>
-                <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
-              </div>
-              <f7-link class="bottom-b">
-                <f7-link class="link-head">
-                  <div class="left-bot">
-                    <div class="time-block">
-                      <span>{{ match.time }}</span>
-                      <span>{{ publishDate(match.date) }}</span>
-                    </div>
-                    <div class="team-block">
-                      <span>{{ match.homeTeam }}</span>
-                      <span>{{ match.awayTeam}}</span>
-                    </div>
+  <f7-page name="home">
+    <f7-navbar class="navbar-top">
+      <f7-nav-left>
+        <f7-link panel-open="left"><f7-icon ion="navicon" size="44px"></f7-icon></f7-link>
+      </f7-nav-left>
+      <div class="titles">
+        <f7-nav-title subtitle="Score">Scores Update</f7-nav-title>
+        <f7-nav-title class="subtitle">Score</f7-nav-title>
+      </div>
+      <f7-nav-right>
+      </f7-nav-right>
+    </f7-navbar>
+    <f7-subnavbar class="toolbar-top">
+      <f7-link class="ic-home"><f7-icon ion="android-home" size="40px"></f7-icon></f7-link>
+      <f7-toolbar  tabbar class="tabbar-top">
+        <f7-link v-for="(day, index) in days" :key="index" :tab-link="'#tabc' + index" :tab-link-active="day.status"><div>{{ day.dayName }}</div><div>{{ day.dayNumb }}</div></f7-link>
+      </f7-toolbar>
+    </f7-subnavbar>
+    <f7-tabs swipeable class="bg-tabs">
+      <f7-tab v-for="(day, index) in days" :key="index" :id="'tabc' + index" :tab-active="day.status">
+        <f7-list class="teams">
+          <f7-list-item v-for="(match, index) in getCurretMatch(day.dayNumb)" :key="index" class="team">
+            <div class="top-b"> 
+              <p>{{ match.league }}</p>
+              <f7-checkbox @change="favourData" :checked="match.favoriteStatus" :value="JSON.stringify(match)" class="like"></f7-checkbox>
+            </div>
+            <f7-link class="bottom-b">
+              <f7-link class="link-head">
+                <div class="left-bot">
+                  <div class="time-block">
+                    <span>{{ match.time }}</span>
+                    <span>{{ publishDate(match.date) }}</span>
                   </div>
-                </f7-link>
-                <div class="right-bot">
-                  <div class="point-block">
-                    <span>{{ match.homeGoals }}</span>
-                    <span>{{ match.awayGoals }}</span>
+                  <div class="team-block">
+                    <span>{{ match.homeTeam }}</span>
+                    <span>{{ match.awayTeam}}</span>
                   </div>
-                  <f7-link class="navigate" @click="getHeadToHead(match.id)"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
                 </div>
               </f7-link>
-            </f7-list-item>
-          </f7-list>
-        </f7-tab>
-      </f7-tabs>            
+              <div class="right-bot">
+                <div class="point-block">
+                  <span>{{ match.homeGoals }}</span>
+                  <span>{{ match.awayGoals }}</span>
+                </div>
+                <f7-link class="navigate" @click="getHeadToHead(match.id)"><f7-icon ion="android-send" size="35px"></f7-icon></f7-link>
+              </div>
+            </f7-link>
+          </f7-list-item>
+        </f7-list>
+      </f7-tab>
+    </f7-tabs>            
   </f7-page>
 </template>
 

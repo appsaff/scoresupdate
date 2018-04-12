@@ -6,7 +6,7 @@
       <f7-view url="/panel-left/" links-view=".view-main" />
     </f7-panel>
     <f7-views>
-    <f7-view url="/score/" :main="true" id="main-view" class="ios-edges"></f7-view>
+      <f7-view url="/score/" :main="true" id="main-view" class="ios-edges"></f7-view>
       <f7-toolbar bottom-md tabbar labels class="toolbar-bot">
         <f7-link href="/score/" icon-if-md="ion:ios-football" text="SCORE"></f7-link>
         <f7-link href="/livePage/" icon-if-md="ion:ios-world" text="LIVE"></f7-link>
@@ -19,7 +19,7 @@
     <!-- Popup -->
     <f7-popup id="popup">
       <f7-view>
-        <f7-page class="popup-page" name="home">
+        <f7-page class="popup-page" name="subscribe">
           <f7-block class="popup-block">
             <f7-block-header>
               <f7-link class="close-but" popup-close><img src="./static/img/close-pop.png" alt=""></f7-link>

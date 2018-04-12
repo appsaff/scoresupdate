@@ -1,5 +1,5 @@
 <template>
-  <f7-page class="menu-page">
+  <f7-page class="menu-page" name="menu">
     <f7-navbar class="navbar-top" back-link="Back">
       <div class="titles">
         <f7-nav-title class="head-title" title="Score">Scores Update</f7-nav-title>
