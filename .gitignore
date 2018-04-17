@@ -1,11 +1,6 @@
-.DS_Store
+.idea
+gen/
 node_modules/
 platforms/
 plugins/
-dist/
-gen/
-npm-debug.log
-.idea
-
-# Production ignore
 src/
