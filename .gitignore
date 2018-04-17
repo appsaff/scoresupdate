@@ -31,7 +31,6 @@ node_modules
 jspm_packages
 platforms/
 gen/
-www
 plugins/
 
 # Optional npm cache directory
@@ -43,6 +42,12 @@ plugins/
 .DS_Store
 node_modules/
 dist/
+gen/
 npm-debug.log
-src/fonts
 .idea
+
+# Production ignore
+src/
+
+# Develop ignore
+www/
